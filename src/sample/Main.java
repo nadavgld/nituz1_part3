@@ -7,10 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    public static String username = null;
+    public static Stage currentStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        currentStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        root.getStylesheets().add(getClass().getResource("style.css").toString());
         primaryStage.setTitle("Everything4Rent");
         primaryStage.setScene(new Scene(root, 700, 450));
         primaryStage.show();

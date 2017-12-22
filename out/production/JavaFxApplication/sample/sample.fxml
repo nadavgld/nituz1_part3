@@ -16,8 +16,8 @@
          <center>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Register" />
-                  <Button mnemonicParsing="false" text="Login" />
+                  <Button styleClass="button" fx:id="b_reg" onAction="#registerPage" mnemonicParsing="false" text="Register" />
+                  <Button styleClass="button" fx:id="b_log" onAction="#loginPage" mnemonicParsing="false" text="Login" />
                </children>
             </HBox>
          </center>
