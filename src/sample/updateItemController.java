@@ -95,6 +95,11 @@ public class updateItemController {
             return;
         }
 
+        if(desc.length() < 2){
+            c.showAlert(Alert.AlertType.WARNING,"Item Adding Error", "Please fill a proper description");
+            return;
+        }
+
         Table table = null;
         try {
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");

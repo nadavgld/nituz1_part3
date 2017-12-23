@@ -76,6 +76,11 @@ public class addItemController {
             return;
         }
 
+        if(desc.length() < 2){
+            c.showAlert(Alert.AlertType.WARNING,"Item Adding Error", "Please fill a proper description");
+            return;
+        }
+
         try {
             Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
             table.addRow(null,userID,desc,price+"$",available,cat,trade);

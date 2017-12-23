@@ -70,7 +70,6 @@ public class itemListController {
             int idx = itemList_list.getSelectionModel().getSelectedIndex();
             selectedItemId = itemMap.get(idx);
 
-            //move to item profile
             try {
                 c.switchScene("updateItem.fxml","Everything4Rent", 700,450,"style.css");
             } catch (IOException e) {

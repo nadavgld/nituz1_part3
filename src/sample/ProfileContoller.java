@@ -96,6 +96,11 @@ public class ProfileContoller {
             return;
         }
 
+        if(name.length() < 2){
+            c.showAlert(Alert.AlertType.WARNING,"Update Error","Username is not valid");
+            return;
+        }
+
         if(name.length() == 0 || pass.length() == 0 || mail.length() == 0){
             c.showAlert(Alert.AlertType.WARNING,"Update Error","All fields must be filled");
         }else{

@@ -108,6 +108,11 @@ public class Controller {
     }
 
     public void searchPage(ActionEvent actionEvent) {
+        try {
+            switchScene("search.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addItemPage(ActionEvent actionEvent) {
@@ -136,6 +141,11 @@ public class Controller {
         Matcher m = ptr.matcher(mail);
         if(!m.matches()){
             showAlert(Alert.AlertType.WARNING,"Registration Error","Email is not valid");
+            return;
+        }
+
+        if(name.length() < 2){
+            showAlert(Alert.AlertType.WARNING,"Registration Error","Username is not valid");
             return;
         }
 
