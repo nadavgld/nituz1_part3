@@ -19,7 +19,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Back to HomePage" onMouseClicked="#backToHomePage" textFill="#4f75ff" underline="true">
+                  <Label text="Back to HomePage" onMouseClicked="#backToMainPage" textFill="#4f75ff" underline="true">
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin>
