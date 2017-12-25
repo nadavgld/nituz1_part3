@@ -16,13 +16,13 @@
          <center>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button styleClass="button" fx:id="b_reg" onAction="#registerPage" mnemonicParsing="false" text="Register" />
-                  <Button styleClass="button" fx:id="b_log" onAction="#loginPage" mnemonicParsing="false" text="Login" />
+                  <Button fx:id="b_reg" mnemonicParsing="false" onAction="#registerPage" styleClass="button" text="Register" />
+                  <Button fx:id="b_log" mnemonicParsing="false" onAction="#loginPage" styleClass="button" text="Login" />
                </children>
             </HBox>
          </center>
          <top>
-            <Label text="Everything4Rent" textAlignment="CENTER" textFill="RED" underline="true" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Everything4Rent" textAlignment="CENTER" textFill="RED" underline="true" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Dubai Regular" size="24.0" />
                </font>

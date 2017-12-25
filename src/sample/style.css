@@ -8,3 +8,12 @@
 .button:hover{
     -fx-background-color: #ff5400;
 }
+
+.link:hover{
+    -fx-text-fill: #ff5400;
+}
+
+TextField, PasswordField{
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+}

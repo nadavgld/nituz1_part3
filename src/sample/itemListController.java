@@ -50,6 +50,10 @@ public class itemListController {
                     i++;
                 }
             }
+
+            if(i==0){
+                itemList_list.getItems().add(i,"No item was found..");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +72,11 @@ public class itemListController {
 
         if(mouseEvent.getClickCount() == 2) {
             int idx = itemList_list.getSelectionModel().getSelectedIndex();
-            selectedItemId = itemMap.get(idx);
+            try {
+                selectedItemId = itemMap.get(idx);
+            }catch (Exception e){
+                return;
+            }
 
             try {
                 c.switchScene("updateItem.fxml","Everything4Rent", 700,450,"style.css");

@@ -84,6 +84,9 @@ public class searchController {
                     i++;
                 }
             }
+            if(i==0){
+                search_list.getItems().add(i,"No item was found..");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
