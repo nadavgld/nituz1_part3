@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane fx:id="pv" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.packageViewController">
+      <Accordion fx:id="pv_accordion" layoutY="11.0" prefWidth="575.0">
+      </Accordion>
+</ScrollPane>

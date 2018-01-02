@@ -17,3 +17,13 @@ TextField, PasswordField{
     -fx-background-radius: 30;
     -fx-background-insets: 0;
 }
+
+.packageRemoveLink:hover{
+    -fx-text-fill: #ff5400;
+}
+
+.packageRemoveLink{
+    -fx-font-weight: bold;
+    -fx-text-fill: #be1d00;
+}
+

@@ -17,14 +17,14 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Label styleClass="link" onMouseClicked="#backToMainPage" text="Back to HomePage" textFill="#4f75ff" underline="true">
+                        <Label onMouseClicked="#backToMainPage" styleClass="link" text="Back to HomePage" textFill="#4f75ff" underline="true">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin></Label>
                         <Label text="|" />
-                        <Label styleClass="link" fx:id="home_logout" onMouseClicked="#logout" text="logout" textFill="#4f75ff" underline="true" />
+                        <Label fx:id="home_logout" onMouseClicked="#logout" styleClass="link" text="logout" textFill="#4f75ff" underline="true" />
                      </children>
                   </HBox>
                   <GridPane alignment="CENTER" maxWidth="400.0" prefHeight="150.0" prefWidth="210.0" vgap="50.0">

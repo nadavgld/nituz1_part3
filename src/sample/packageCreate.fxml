@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.packageCreateController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="25.0">
+         <children>
+            <Label text="Last questions and your package is ready.." />
+            <CheckBox fx:id="cp_trade" mnemonicParsing="false" text="Is the package  tradable?" />
+            <CheckBox fx:id="cp_avail" mnemonicParsing="false" text="Is the package available?" />
+            <Button onAction="#createPackage" mnemonicParsing="false" text="Done" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

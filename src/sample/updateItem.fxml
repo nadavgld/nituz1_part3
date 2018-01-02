@@ -29,7 +29,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label styleClass="link" onMouseClicked="#backToHome" text="Back To List" textFill="#4f75ff" underline="true">
+                  <Label onMouseClicked="#backToHome" styleClass="link" text="Back To List" textFill="#4f75ff" underline="true">
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin>
@@ -76,6 +76,7 @@
                      <children>
                          <Button fx:id="b_updateItem" mnemonicParsing="false" onAction="#updateItem" styleClass="button" text="Update" />
                          <Button fx:id="b_deleteItem" mnemonicParsing="false" onAction="#deleteItem" styleClass="button" text="Delete" />
+                        <Button mnemonicParsing="false" text="Lend" />
                      </children>
                   </HBox>
                </children>
