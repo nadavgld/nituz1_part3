@@ -30,14 +30,15 @@ public class packageCreateController {
     public void createPackage(ActionEvent actionEvent) {
         Table table = null;
         int p_id = -1;
+        int summedPrice = calculateSummedPrice();
 
         try {
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
-            table.addRow(null,userID,cp_avail.isSelected(), cp_trade.isSelected(), 0, packageToCreate, -1);
+            table.addRow(null,userID,cp_avail.isSelected(), cp_trade.isSelected(), 0, packageToCreate, -1, summedPrice);
 
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
             for(Row row : table) {
-                if (Integer.parseInt(row.get("ownerID").toString()) == userID && row.get("description").toString().equals(packageToCreate)) {
+                if (Integer.parseInt(row.get("ownerID").toString()) == userID && row.get("Description").toString().equals(packageToCreate)) {
                     p_id = Integer.parseInt(row.get("ID").toString());
                     break;
                 }
@@ -55,6 +56,24 @@ public class packageCreateController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private int calculateSummedPrice() {
+        int p = 0;
+
+        Table table;
+
+        try {
+            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
+            for (Row row : table) {
+                if (selectedIdexes.contains(Integer.parseInt(row.get("ID").toString()))) {
+
+                    String price = row.get("Price").toString();
+                    p += Integer.parseInt(price.substring(0,price.length()-1));
+                }
+            }
+        }catch (Exception e){ }
+        return p;
     }
 
     private void insertItemToPackage(int i, int p_id) {

@@ -146,7 +146,7 @@ public class packageViewController {
 
             for(Row row : table)
                 if (Integer.parseInt(row.get("ownerID").toString()) == userID)
-                    arr.put(Integer.parseInt(row.get("ID").toString()),(row.get("description").toString()));
+                    arr.put(Integer.parseInt(row.get("ID").toString()),(row.get("Description").toString()));
 
         } catch (IOException e) {
             e.printStackTrace();
