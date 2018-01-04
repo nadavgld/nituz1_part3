@@ -59,7 +59,7 @@
                            <GridPane.margin>
                               <Insets left="100.0" />
                            </GridPane.margin></ChoiceBox>
-                         <CheckBox fx:id="upd_available" focusTraversable="false" GridPane.rowIndex="5">
+                         <CheckBox fx:id="upd_available" onMouseClicked="#availabilityChange" focusTraversable="false" GridPane.rowIndex="5">
                            <GridPane.margin>
                               <Insets left="100.0" />
                            </GridPane.margin></CheckBox>
@@ -76,7 +76,7 @@
                      <children>
                          <Button fx:id="b_updateItem" mnemonicParsing="false" onAction="#updateItem" styleClass="button" text="Update" />
                          <Button fx:id="b_deleteItem" mnemonicParsing="false" onAction="#deleteItem" styleClass="button" text="Delete" />
-                        <Button mnemonicParsing="false" text="Lend" />
+                        <Button fx:id="b_lendItem" mnemonicParsing="false" onAction="#lendItem" styleClass="button" text="Lend" />
                      </children>
                   </HBox>
                </children>
