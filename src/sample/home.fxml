@@ -46,7 +46,7 @@
                      </VBox.margin>
                      <children>
                         <Label fx:id="home_label" text="Welcome!" GridPane.rowIndex="1" />
-                        <Button fx:id="home_add" mnemonicParsing="false" onAction="#addItemPage" styleClass="button" text="Add Item" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                        <Button fx:id="home_add" mnemonicParsing="false" onAction="#viewRequests" styleClass="button" text="Opened Requests" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -56,11 +56,6 @@
                         <Button fx:id="home_edit" mnemonicParsing="false" onAction="#editProfilePage" styleClass="button" text="Edit Profile" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" visible="false">
-                     <children>
-                        <Button fx:id="b_verify" mnemonicParsing="false" onAction="#loginUser" styleClass="button" text="Verify" />
-                     </children>
-                  </HBox>
                </children>
             </VBox>
          </center>

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.mail.*;
@@ -30,7 +31,6 @@ public class Controller {
     public static int userID = -1;
     public static Stage currentStage = Main.currentStage;
     public static String dbPath = ".\\ndb.mdb";
-//    public final static String[] choices = {"Misc","Art","Music", "Gaming", "Fasion", "Photography", "Cars", "Furniture"};
     public final static String[] choices = {"Real Estate","2nd Hand Goods","Vehicles", "Pets"};
     public static String typeOfUser = null;
 
@@ -61,12 +61,31 @@ public class Controller {
     private Button b_reg;
     @FXML
     private Button b_logout;
+    @FXML
+    private Button home_add;
+    @FXML
+    private Button home_items;
 
     public void initialize() {
         // initialization code here...
-//        System.out.println(currentStage.getTitle());
         if(home_logout != null && username != null){
             home_logout.setText("Logout [" + username + "]");
+
+            if(typeOfUser.equals("Loaner")){
+                home_items.setText("Loaned Items");
+                home_items.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent t) {
+                        viewLoanedList();
+                    }
+                });
+            }else{
+                home_items.setText("Your Items");
+                home_items.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent t) {
+                        viewUserItemListPage();
+                    }
+                });
+            }
         }
 
         if(b_log != null && username != null){
@@ -87,52 +106,36 @@ public class Controller {
         }
     }
 
-    public void registerPage(){
+    //Loaners
+    private void viewLoanedList() {
         try {
-            switchScene("register.fxml","Everything4Rent Register", 700,450,"style.css");
+            switchScene("loanList.fxml","Your Loan List", 700,450,"style.css");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loginPage(){
-
-        if(username != null)
-            try {
-                switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
-                return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+    @FXML
+    private void viewRequests() {
+        Parent root = null;
         try {
-            switchScene("login.fxml","Everything4Rent Login", 700,450,"style.css");
+            Stage s = new Stage();
+            root = FXMLLoader.load(getClass().getResource("viewRequest.fxml"));
+            root.getStylesheets().add(getClass().getResource("style.css").toString());
+            s.setTitle("Everything4Rent");
+            s.setScene(new Scene(root, 700, 420));
+            s.initModality(Modality.WINDOW_MODAL);
+            s.initOwner(currentStage);
+            s.setResizable(false);
+            s.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void backToMainPage() {
-        try {
-            switchScene("sample.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void editProfilePage(ActionEvent actionEvent) {
-        try {
-            switchScene("editProfile.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void viewUserItemListPage(ActionEvent actionEvent) {
-        if(typeOfUser.equals("Loaner")){
-            showAlert(Alert.AlertType.WARNING,"Everything4Rent","Error, 'Loaner' type users does not have items");
-            return;
-        }
+    //!Loaners
+    public void viewUserItemListPage() {
         try {
             switchScene("itemList.fxml","Everything4Rent", 700,450,"style.css");
         } catch (IOException e) {
@@ -140,19 +143,7 @@ public class Controller {
         }
     }
 
-    public void searchPage(ActionEvent actionEvent) {
-        try {
-            switchScene("search.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addItemPage(ActionEvent actionEvent) {
-        if(typeOfUser.equals("Loaner")){
-            showAlert(Alert.AlertType.WARNING,"Everything4Rent","Error, 'Loaner' type users cannot add new Item");
-            return;
-        }
+    public void addItemPage() {
         try {
             switchScene("addItem.fxml","Everything4Rent", 700,450,"style.css");
         } catch (IOException e) {
@@ -160,13 +151,103 @@ public class Controller {
         }
     }
 
-    public void switchScene(String fxml, String title, int width, int height, String style) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(fxml));
-        root.getStylesheets().add(getClass().getResource(style).toString());
-        currentStage.setTitle(title);
-        currentStage.setScene(new Scene(root, width, height));
 
-        currentStage.show();
+    //Global to all users
+        //Logout
+    public void logout() {
+        userID = -1;
+        username = null;
+        typeOfUser = null;
+        backToMainPage();
+    }
+
+        //Login
+    public void loginUser(ActionEvent actionEvent) {
+        String name = log_name.getText().trim();
+        String pass = log_pass.getText().trim();
+
+        if(name.length() == 0 || pass.length()==0){
+            showAlert(Alert.AlertType.WARNING,"Everything4Rent", "Must fill username and password");
+            return;
+        }
+
+        boolean found = false;
+
+        Table table = null;
+        try {
+            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
+            for(Row row : table) {
+                if (row.get("Username").toString().toLowerCase().equals(name.toLowerCase()) && row.get("Password").toString().equals(pass)) {
+                    found = true;
+                    typeOfUser = row.get("userType").toString();
+
+                    boolean verify = (Boolean) row.get("Verification");
+
+                    if(!verify){
+                        verifyUser = row.get("Username").toString();
+                        switchScene("verify.fxml","Everything4Rent Login", 700,450,"style.css");
+                    }else{
+                        username = row.get("Username").toString();
+                        userID = Integer.parseInt(row.get("ID").toString());
+                        switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
+                    }
+
+                    break;
+                }
+            }
+
+            if(!found){
+                showAlert(Alert.AlertType.WARNING,"Everything4Rent", "Username and password does not match");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void verifyUser(ActionEvent actionEvent) {
+        String key = ver_key.getText().trim();
+        boolean found = false;
+        boolean verified = false;
+        Table table = null;
+        try {
+            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
+            for (Row row : table) {
+                if (row.get("Username").toString().toLowerCase().equals(verifyUser.toLowerCase())) {
+                    found = true;
+                    if (row.get("verificationPass").toString().equals(key)) {
+                        verified = true;
+                        row.put("Verification", true);
+                        table.updateRow(row);
+                        userID = Integer.parseInt(row.get("ID").toString());
+
+                        showAlert(Alert.AlertType.INFORMATION, "Everything4Rent", "Your user has been verified");
+                        switchScene("home.fxml", "Everything4Rent", 700, 450, "style.css");
+                        break;
+                    } else {
+                        showAlert(Alert.AlertType.WARNING, "Everything4Rent", "Wrong key, check in your mailbox");
+                    }
+                }
+            }
+
+            if (!found) {
+                showAlert(Alert.AlertType.WARNING, "Everything4Rent", "Username does not exists");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (found && verified) {
+            username = verifyUser;
+            verifyUser = null;
+        }
+    }
+
+        //Registration
+    public void clearRegistrationFields(ActionEvent actionEvent) {
+        reg_pass.setText("");
+        reg_name.setText("");
+        reg_email.setText("");
     }
 
     public void registerNewUser(ActionEvent actionEvent) {
@@ -260,11 +341,11 @@ public class Controller {
         props.put("mail.smtp.from", bounceAddr);
 
         Session mailSession = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(userid, password);
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(userid, password);
+                    }
                 }
-            }
         );
 
         MimeMessage message = new MimeMessage(mailSession);
@@ -295,6 +376,59 @@ public class Controller {
         }).start();
     }
 
+    public void registerPage(){
+        try {
+            switchScene("register.fxml","Everything4Rent Register", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        //Switching Scenes
+    public void loginPage(){
+
+        if(username != null)
+            try {
+                switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        try {
+            switchScene("login.fxml","Everything4Rent Login", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void searchPage() {
+        try {
+            switchScene("search.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editProfilePage() {
+        try {
+            switchScene("editProfile.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //Global to all scenes
+    public void switchScene(String fxml, String title, int width, int height, String style) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxml));
+        root.getStylesheets().add(getClass().getResource(style).toString());
+        currentStage.setTitle(title);
+        currentStage.setScene(new Scene(root, width, height));
+
+        currentStage.show();
+    }
+
     public void showAlert(Alert.AlertType a, String title, String header){
         Alert alert = new Alert(a);
         alert.setTitle(title);
@@ -302,97 +436,11 @@ public class Controller {
         alert.showAndWait();
     }
 
-    public void clearRegistrationFields(ActionEvent actionEvent) {
-        reg_pass.setText("");
-        reg_name.setText("");
-        reg_email.setText("");
-    }
-
-    public void loginUser(ActionEvent actionEvent) {
-        String name = log_name.getText().trim();
-        String pass = log_pass.getText().trim();
-
-        if(name.length() == 0 || pass.length()==0){
-            showAlert(Alert.AlertType.WARNING,"Everything4Rent", "Must fill username and password");
-            return;
-        }
-
-        boolean found = false;
-
-        Table table = null;
+    public void backToMainPage() {
         try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
-            for(Row row : table) {
-                if (row.get("Username").toString().toLowerCase().equals(name.toLowerCase()) && row.get("Password").toString().equals(pass)) {
-                    found = true;
-                    typeOfUser = row.get("userType").toString();
-
-                    boolean verify = (Boolean) row.get("Verification");
-
-                    if(!verify){
-                        verifyUser = name;
-                        switchScene("verify.fxml","Everything4Rent Login", 700,450,"style.css");
-                    }else{
-                        username = name;
-                        userID = Integer.parseInt(row.get("ID").toString());
-                        switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
-                    }
-
-                    break;
-                }
-            }
-
-            if(!found){
-                showAlert(Alert.AlertType.WARNING,"Everything4Rent", "Username and password does not match");
-            }
-
+            switchScene("sample.fxml","Everything4Rent", 700,450,"style.css");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void verifyUser(ActionEvent actionEvent) {
-        String key = ver_key.getText().trim();
-        boolean found = false;
-        boolean verified = false;
-        Table table = null;
-        try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
-            for (Row row : table) {
-                if (row.get("Username").toString().toLowerCase().equals(verifyUser.toLowerCase())) {
-                    found = true;
-                    if (row.get("verificationPass").toString().equals(key)) {
-                        verified = true;
-                        row.put("Verification", true);
-                        table.updateRow(row);
-                        userID = Integer.parseInt(row.get("ID").toString());
-
-                        showAlert(Alert.AlertType.INFORMATION, "Everything4Rent", "Your user has been verified");
-                        switchScene("home.fxml", "Everything4Rent", 700, 450, "style.css");
-                        break;
-                    } else {
-                        showAlert(Alert.AlertType.WARNING, "Everything4Rent", "Wrong key, check in your mailbox");
-                    }
-                }
-            }
-
-            if (!found) {
-                showAlert(Alert.AlertType.WARNING, "Everything4Rent", "Username does not exists");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (found && verified) {
-            username = verifyUser;
-            verifyUser = null;
-        }
-    }
-
-    public void logout() {
-        userID = -1;
-        username = null;
-        typeOfUser = null;
-        backToMainPage();
     }
 }

@@ -52,17 +52,17 @@
                      <children>
                          <Label fx:id="search_label" text="Insert searching keywords" />
                          <TextField fx:id="searchQuery" focusTraversable="false" onKeyReleased="#search" promptText="Enter your query" GridPane.rowIndex="1" />
-                         <ListView fx:id="search_list" prefHeight="230.0" prefWidth="230.0" GridPane.rowIndex="4">
+                         <ListView fx:id="search_list" onMouseClicked="#handleItemSelecting" prefHeight="230.0" prefWidth="230.0" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin></ListView>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0" GridPane.rowIndex="2">
                            <children>
-                              <CheckBox fx:id="search_cb_desc" maxHeight="25.0" mnemonicParsing="false" text="Description">
+                              <CheckBox fx:id="search_cb_desc" maxHeight="25.0" mnemonicParsing="false" selected="true" text="Description">
                                  <font>
                                     <Font size="12.0" />
                                  </font></CheckBox>
-                              <CheckBox fx:id="search_cb_cat" maxHeight="25.0" mnemonicParsing="false" text="Category">
+                              <CheckBox fx:id="search_cb_cat" maxHeight="25.0" mnemonicParsing="false" selected="true" text="Category">
                                  <font>
                                     <Font size="12.0" />
                                  </font></CheckBox>
@@ -95,7 +95,7 @@
                               <Insets />
                            </GridPane.margin>
                         </HBox>
-                        <Button mnemonicParsing="false" text="Search" GridPane.rowIndex="3" onAction="#btnSearch" />
+                        <Button mnemonicParsing="false" onAction="#btnSearch" text="Search" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">

@@ -202,4 +202,12 @@ public class itemListController {
             e.printStackTrace();
         }
     }
+
+    public void addItem(MouseEvent mouseEvent) {
+        try {
+            c.switchScene("addItem.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

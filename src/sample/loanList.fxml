@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="457.0" prefWidth="699.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.itemListController">
+<GridPane alignment="center" hgap="10" prefHeight="457.0" prefWidth="699.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.loanListController">
    <children>
       <BorderPane prefHeight="462.0" prefWidth="699.0">
          <top>
@@ -28,24 +26,20 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                  <HBox prefHeight="35.0" prefWidth="694.0" spacing="10.0">
                      <children>
                         <Label onMouseClicked="#backToHome" styleClass="link" text="Back" textFill="#4f75ff" underline="true" />
-                        <Label text="|" />
-                        <Label fx:id="itemList_packagesNum" onMouseClicked="#showPackages" styleClass="link" text="Your Packages" textFill="#4f75ff" underline="true" />
-                        <Label layoutX="51.0" layoutY="10.0" text="|" />
-                        <Label fx:id="itemList_addItem" layoutX="65.0" layoutY="10.0" onMouseClicked="#addItem" styleClass="link" text="Add new item" textFill="#4f75ff" underline="true" />
                      </children>
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label text="Double-Click on an item for more information..">
+                  <Label text="Your Current and Future loan-list..">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                      <padding>
-                        <Insets left="100.0" top="5.0" />
+                        <Insets left="100.0" />
                      </padding>
                   </Label>
                   <GridPane alignment="CENTER" maxWidth="500.0" prefHeight="300.0" prefWidth="500.0" vgap="25.0">
@@ -59,15 +53,17 @@
                         <Insets left="100.0" top="10.0" />
                      </VBox.margin>
                      <children>
-                        <ListView fx:id="itemList_list" onMouseClicked="#handleItemSelecting" prefHeight="300.0" prefWidth="500.0" />
+                        <ListView fx:id="itemList_list" prefHeight="300.0" prefWidth="500.0" />
                      </children>
                   </GridPane>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Label text="Select Items and create new Package" />
-                        <TextField fx:id="itemList_packageName" promptText="New package name" />
-                        <Button mnemonicParsing="false" onAction="#createNewPackage" text="Create" />
+                        <Label text="Previous deals made until today:" />
+                        <Label fx:id="totalDeals"/>
                      </children>
+                     <padding>
+                        <Insets left="100.0" />
+                     </padding>
                   </HBox>
                </children>
             </VBox>

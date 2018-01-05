@@ -51,7 +51,7 @@ public class addItemController {
 
     public void backToHome() {
         try {
-            c.switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
+            c.switchScene("itemList.fxml","Everything4Rent", 700,450,"style.css");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="350.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.searchController">
+   <children>
+      <VBox alignment="CENTER_LEFT" prefHeight="350.0" prefWidth="400.0" spacing="20.0">
+         <children>
+            <Label text="Details of Item before CheckOut:">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></Label>
+            <GridPane prefWidth="350.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="102.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="10.0" prefWidth="258.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <children>
+                  <Label text="Price" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
+                  <Label layoutX="30.0" layoutY="45.0" text="Description">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
+                  <Label layoutX="30.0" layoutY="15.0" text="Owner" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
+                  <Label fx:id="item_desc" text="" GridPane.columnIndex="1" />
+                  <Label fx:id="item_price" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="item_owner" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <Label text="Payment:">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="26.0" prefWidth="400.0" spacing="20.0">
+               <children>
+                    <RadioButton mnemonicParsing="false" selected="true" text="Loan">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="loanType" />
+                     </toggleGroup></RadioButton>
+                   <RadioButton mnemonicParsing="false" text="Trade" toggleGroup="$loanType" />
+                   <RadioButton mnemonicParsing="false" text="Free-Loan" toggleGroup="$loanType" />
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding></HBox>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#continueButton" prefHeight="31.0" prefWidth="360.0" text="Continue">
+               <VBox.margin>
+                  <Insets left="20.0" top="13.0" />
+               </VBox.margin></Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

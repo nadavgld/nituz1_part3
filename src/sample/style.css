@@ -18,12 +18,24 @@ TextField, PasswordField{
     -fx-background-insets: 0;
 }
 
-.packageRemoveLink:hover{
+.requestAction ,.packageRemoveLink:hover{
     -fx-text-fill: #ff5400;
 }
 
 .packageRemoveLink{
     -fx-font-weight: bold;
     -fx-text-fill: #be1d00;
+}
+
+.approve,.decline{
+    -fx-font-weight: bold;
+}
+
+.approve:hover{
+    -fx-text-fill: greenyellow;
+}
+
+.decline:hover{
+    -fx-text-fill: #ff0006;
 }
 
