@@ -143,10 +143,12 @@ public class viewRequestController {
                     row.put("status", newStatus);
                     table.updateRow(row);
 
-                    Table lend = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
-                    lend.addRow(null,row.get("itemID").toString(),row.get("isPackage"),
-                            Integer.parseInt(row.get("from").toString()),row.get("startDate").toString(),
-                            row.get("returnDate").toString(),row.get("tmura").toString());
+                    if(approved) {
+                        Table lend = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
+                        lend.addRow(null, row.get("itemID").toString(), row.get("isPackage"),
+                                Integer.parseInt(row.get("from").toString()), row.get("startDate").toString(),
+                                row.get("returnDate").toString(), row.get("tmura").toString());
+                    }
 
                     c.showAlert(Alert.AlertType.INFORMATION,"Everything4Rent",newStatus + " Successfully");
                     changed = true;

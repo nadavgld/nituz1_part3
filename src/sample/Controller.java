@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -65,6 +67,8 @@ public class Controller {
     private Button home_add;
     @FXML
     private Button home_items;
+    @FXML
+    private HBox home_hb;
 
     public void initialize() {
         // initialization code here...
@@ -85,6 +89,17 @@ public class Controller {
                         viewUserItemListPage();
                     }
                 });
+
+                if(typeOfUser.equals("Both")) {
+                    Label l = new Label("|");
+                    Label loanList = new Label("Your Loan List");
+                    loanList.getStyleClass().addAll("link");
+                    loanList.setTextFill(Paint.valueOf("#4f75ff"));
+                    loanList.setUnderline(true);
+                    loanList.setOnMouseClicked((EventHandler<MouseEvent>) t -> viewLoanedList());
+
+                    home_hb.getChildren().addAll(l, loanList);
+                }
             }
         }
 
@@ -143,13 +158,13 @@ public class Controller {
         }
     }
 
-    public void addItemPage() {
-        try {
-            switchScene("addItem.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void addItemPage() {
+//        try {
+//            switchScene("addItem.fxml","Everything4Rent", 700,450,"style.css");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     //Global to all users

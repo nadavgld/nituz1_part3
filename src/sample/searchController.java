@@ -124,7 +124,7 @@ public class searchController {
     private void disableTrading() {
         for(Toggle t: loanType.getToggles()){
             RadioButton rb = (RadioButton)t;
-            if(rb.getText().equals("Trade")) {
+            if(rb.getText().equals("Trade") && !itemDescMap.get(selectedIdexnum).isTradable) {
                 rb.setDisable(true);
                 break;
             }
@@ -285,7 +285,7 @@ public class searchController {
                     String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
                     boolean b_a = avaiable.equals("is available") ? true : false;
                     String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
-                    boolean b_t = tradable.equals("is tradeable") ? true : false;
+                    boolean b_t = tradable.equals("is tradable") ? true : false;
 
                     String listRow = pack ? desc + " - " + price + "$ - " + avaiable + ", " + tradable : desc + " (" + cat + ") - " + price + " - " + avaiable + ", " + tradable;
                     search_list.getItems().add(i,listRow);

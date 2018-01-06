@@ -50,7 +50,7 @@ public class loanListController {
                     if(returnTime.isAfter(LocalDateTime.now()) || returnTime.isEqual(LocalDateTime.now())) {
 
                         String price = (row.get("tmura").toString());
-                        String str_price = price.equals("0") ? "free" : price.chars().allMatch(Character::isDigit) ? price + "$" : price;
+                        String str_price = price.equals("0") ? "Free" : price.chars().allMatch(Character::isDigit) ? price + "$" : price;
                         boolean isPackage = row.get("isPackage").toString().toLowerCase().equals("true") ? true : false;
                         int itemID = Integer.parseInt(row.get("itemID").toString());
 

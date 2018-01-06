@@ -17,7 +17,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox fx:id="home_hb" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label onMouseClicked="#backToMainPage" styleClass="link" text="Back to HomePage" textFill="#4f75ff" underline="true">
                            <HBox.margin>
