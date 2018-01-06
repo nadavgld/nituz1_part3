@@ -7,14 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Everything4Rent.jar" afterPath="$PROJECT_DIR$/Everything4Rent.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ndb.mdb" afterPath="$PROJECT_DIR$/ndb.mdb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/Controller.java" afterPath="$PROJECT_DIR$/src/sample/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/home.fxml" afterPath="$PROJECT_DIR$/src/sample/home.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/loanListController.java" afterPath="$PROJECT_DIR$/src/sample/loanListController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/itemListController.java" afterPath="$PROJECT_DIR$/src/sample/itemListController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/searchController.java" afterPath="$PROJECT_DIR$/src/sample/searchController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/viewRequestController.java" afterPath="$PROJECT_DIR$/src/sample/viewRequestController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/updateItem.fxml" afterPath="$PROJECT_DIR$/src/sample/updateItem.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/updateItemController.java" afterPath="$PROJECT_DIR$/src/sample/updateItemController.java" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,95 +75,58 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="itemList.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/itemList.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="61" column="93" lean-forward="false" selection-start-line="61" selection-start-column="56" selection-end-line="61" selection-end-column="93" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="searchController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sample/searchController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="285" column="63" lean-forward="false" selection-start-line="285" selection-start-column="63" selection-end-line="285" selection-end-column="63" />
+            <state relative-caret-position="620">
+              <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
               <folding>
-                <element signature="method#addInfoToPane#0;class#searchController#0" expanded="false" />
-                <element signature="e#3924#3969#0" expanded="false" />
-                <element signature="method#setReturnPlusOne#0;class#searchController#0" expanded="false" />
-                <element signature="e#4554#4979#0" expanded="false" />
-                <element signature="e#5022#5340#0" expanded="false" />
-                <element signature="method#setPickerFromToday#0;class#searchController#0" expanded="false" />
-                <element signature="method#dateAlreadyTaken#0;class#searchController#0" expanded="false" />
-                <element signature="method#selectPayment#0;class#searchController#0" expanded="false" />
-                <element signature="method#backToHome#0;class#searchController#0" expanded="false" />
-                <element signature="method#search#0;class#searchController#0" expanded="false" />
-                <element signature="method#searchLog#0;class#searchController#0" expanded="false" />
-                <element signature="method#rowContainsQuery#0;class#searchController#0" expanded="false" />
-                <element signature="method#handleItemSelecting#0;class#searchController#0" expanded="false" />
-                <element signature="method#continueButton#0;class#searchController#0" expanded="false" />
-                <element signature="method#moveToStepInLoanProcess#0;class#searchController#0" expanded="false" />
-                <element signature="method#stepBackFromPayment#0;class#searchController#0" expanded="false" />
-                <element signature="method#checkOut#0;class#searchController#0" expanded="false" />
-                <element signature="method#sendRequestToOwner#0;class#searchController#0" expanded="false" />
-                <element signature="method#itemIsAvailable#0;class#searchController#0" expanded="false" />
-                <element signature="class#Item#0;class#searchController#0" expanded="false" />
-                <element signature="method#Item#0;class#Item#0;class#searchController#0" expanded="false" />
-                <element signature="method#ownerOfItem#0;class#Item#0;class#searchController#0" expanded="false" />
-                <element signature="method#ownerIDOfItem#0;class#Item#0;class#searchController#0" expanded="false" />
-                <marker date="1515233740110" expanded="false" signature="7600:8324" ph="{...}" />
+                <element signature="method#initialize#0;class#Controller#0" expanded="false" />
+                <element signature="class#2347:2514" expanded="false" />
+                <element signature="class#2629:2802" expanded="false" />
+                <element signature="class#3510:3653" expanded="false" />
+                <element signature="class#3779:3928" expanded="false" />
+                <element signature="method#viewLoanedList#0;class#Controller#0" expanded="false" />
+                <element signature="method#viewUserItemListPage#0;class#Controller#0" expanded="false" />
+                <element signature="method#viewRequests#0;class#Controller#0" expanded="false" />
+                <element signature="method#logout#0;class#Controller#0" expanded="false" />
+                <element signature="method#loginUser#0;class#Controller#0" expanded="false" />
+                <element signature="method#verifyUser#0;class#Controller#0" expanded="false" />
+                <element signature="method#clearRegistrationFields#0;class#Controller#0" expanded="false" />
+                <element signature="method#registerNewUser#0;class#Controller#0" expanded="false" />
+                <element signature="method#insertNewUser#0;class#Controller#0" expanded="false" />
+                <element signature="method#generateKey#0;class#Controller#0" expanded="false" />
+                <element signature="method#sendMail#0;class#Controller#0" expanded="false" />
+                <element signature="e#20490#21116#0" expanded="false" />
+                <element signature="method#registerPage#0;class#Controller#0" expanded="false" />
+                <element signature="method#loginPage#0;class#Controller#0" expanded="false" />
+                <element signature="method#searchPage#0;class#Controller#0" expanded="false" />
+                <element signature="method#editProfilePage#0;class#Controller#0" expanded="false" />
+                <element signature="method#switchScene#0;class#Controller#0" expanded="false" />
+                <element signature="method#showAlert#0;class#Controller#0" expanded="false" />
+                <element signature="method#backToMainPage#0;class#Controller#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="search.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/search.fxml">
-          <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="1350">
-              <caret line="54" column="136" lean-forward="false" selection-start-line="54" selection-start-column="136" selection-end-line="54" selection-end-column="136" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="paymentChoose.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/paymentChoose.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
+      <file leaf-file-name="updateItemController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sample/updateItemController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+            <state relative-caret-position="824">
+              <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding>
-                <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-                <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-                <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-                <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="itemChoose.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/itemChoose.fxml">
-          <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="13" column="35" lean-forward="false" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
-              <folding>
-                <marker date="1515171302804" expanded="true" signature="3613:3906" ph="..." />
+                <element signature="e#3214#3254#0" expanded="false" />
+                <element signature="method#backToHome#0;class#updateItemController#0" expanded="false" />
+                <element signature="method#updateItem#0;class#updateItemController#0" expanded="false" />
+                <element signature="method#deleteItem#0;class#updateItemController#0" expanded="false" />
+                <element signature="method#getDateFormat#0;class#updateItemController#0" expanded="false" />
+                <element signature="method#strToDate#0;class#updateItemController#0" expanded="false" />
+                <marker date="1515242482086" expanded="true" signature="4114:4625" ph="..." />
+                <marker date="1515242482086" expanded="true" signature="4689:5109" ph="..." />
+                <marker date="1515242482086" expanded="false" signature="9550:9714" ph="{}" />
+                <marker date="1515242482086" expanded="false" signature="9552:9708" ph="//..." />
+                <marker date="1515242482086" expanded="false" signature="9747:9979" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -183,7 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>spac</find>
       <find>back</find>
       <find>pa</find>
       <find>your</find>
@@ -209,10 +169,11 @@
       <find>price</find>
       <find>selectedItemId</find>
       <find>selectedidex</find>
-      <find>== 2</find>
       <find>ownerOfItem()</find>
       <find>itemIsAvailable</find>
       <find>requests</find>
+      <find>itemDescMap.p</find>
+      <find>== 2</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -251,25 +212,25 @@
         <option value="$PROJECT_DIR$/src/sample/packageViewController.java" />
         <option value="$PROJECT_DIR$/src/sample/viewRequest.fxml" />
         <option value="$PROJECT_DIR$/src/sample/style.css" />
-        <option value="$PROJECT_DIR$/src/sample/updateItem.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/itemListController.java" />
         <option value="$PROJECT_DIR$/src/sample/itemChooseController.java" />
         <option value="$PROJECT_DIR$/src/sample/Item.java" />
         <option value="$PROJECT_DIR$/src/sample/itemChoose.fxml" />
         <option value="$PROJECT_DIR$/src/sample/datePicker.fxml" />
         <option value="$PROJECT_DIR$/src/sample/paymentChoose.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/updateItemController.java" />
         <option value="$PROJECT_DIR$/jackcess-2.1.9.jar!/com/healthmarketscience/jackcess/impl/CursorImpl.class" />
         <option value="$PROJECT_DIR$/jackcess-2.1.9.jar!/com/healthmarketscience/jackcess/impl/TableScanCursor.class" />
         <option value="$PROJECT_DIR$/jackcess-2.1.9.jar!/com/healthmarketscience/jackcess/impl/RowIdImpl.class" />
         <option value="$PROJECT_DIR$/jackcess-2.1.9.jar!/com/healthmarketscience/jackcess/impl/TableImpl.class" />
         <option value="$PROJECT_DIR$/jackcess-2.1.9.jar!/com/healthmarketscience/jackcess/impl/UsageMap.class" />
-        <option value="$PROJECT_DIR$/src/sample/search.fxml" />
         <option value="$PROJECT_DIR$/src/sample/loanListController.java" />
         <option value="$PROJECT_DIR$/src/sample/viewRequestController.java" />
         <option value="$PROJECT_DIR$/src/sample/home.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/updateItem.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/search.fxml" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
+        <option value="$PROJECT_DIR$/src/sample/itemListController.java" />
         <option value="$PROJECT_DIR$/src/sample/searchController.java" />
+        <option value="$PROJECT_DIR$/src/sample/updateItemController.java" />
       </list>
     </option>
   </component>
@@ -562,12 +523,12 @@
       <workItem from="1515166992713" duration="10314000" />
       <workItem from="1515187310554" duration="6326000" />
       <workItem from="1515193777159" duration="386000" />
-      <workItem from="1515229116000" duration="3342000" />
+      <workItem from="1515229116000" duration="4999000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127490000" />
+    <option name="totallyTimeSpent" value="129147000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -581,7 +542,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32801822" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32460135" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32460135" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -641,7 +602,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/sample/updateItemController.java</url>
-          <line>249</line>
+          <line>195</line>
           <properties />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
@@ -653,24 +614,30 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/sample/searchController.java</url>
-          <line>445</line>
+          <line>449</line>
           <properties />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Controller.java</url>
-          <line>161</line>
-          <properties />
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/sample/searchController.java</url>
-          <line>124</line>
+          <line>274</line>
           <properties />
           <option name="timeStamp" value="45" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/sample/itemListController.java</url>
+          <line>94</line>
+          <properties />
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/sample/updateItemController.java</url>
+          <line>113</line>
+          <properties />
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="46" />
+      <option name="time" value="50" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -768,30 +735,6 @@
     </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_151/javafx-src.zip!/javafx/stage/Stage.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_151/javafx-src.zip!/javafx/fxml/FXMLLoader.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/loanList.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="61" column="51" lean-forward="true" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/ProfileContoller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="117" column="14" lean-forward="false" selection-start-line="117" selection-start-column="14" selection-end-line="117" selection-end-column="14" />
-          <folding>
-            <element signature="method#initialize#0;class#ProfileContoller#0" expanded="false" />
-            <element signature="method#duplicateUserName#0;class#ProfileContoller#0" expanded="false" />
-            <element signature="method#backToHome#0;class#ProfileContoller#0" expanded="false" />
-            <element signature="method#updateUserInfo#0;class#ProfileContoller#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/viewRequest.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
@@ -807,17 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
           <caret line="34" column="30" lean-forward="false" selection-start-line="34" selection-start-column="30" selection-end-line="34" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/updateItem.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="31" column="90" lean-forward="false" selection-start-line="31" selection-start-column="90" selection-end-line="31" selection-end-column="90" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -845,74 +777,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/itemChooseController.java" />
     <entry file="file://$PROJECT_DIR$/src/sample/Item.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/itemListController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-130">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding>
-            <element signature="method#initialize#0;class#itemListController#0" expanded="false" />
-            <element signature="method#updatePackageLabel#0;class#itemListController#0" expanded="false" />
-            <element signature="method#getAmountOfPackages#0;class#itemListController#0" expanded="false" />
-            <element signature="method#backToHome#0;class#itemListController#0" expanded="false" />
-            <element signature="method#handleItemSelecting#0;class#itemListController#0" expanded="false" />
-            <element signature="method#createNewPackage#0;class#itemListController#0" expanded="false" />
-            <element signature="method#showPackages#0;class#itemListController#0" expanded="false" />
-            <element signature="method#addItem#0;class#itemListController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/packageViewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="46" column="41" lean-forward="false" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
-          <folding>
-            <element signature="method#initialize#0;class#packageViewController#0" expanded="false" />
-            <element signature="method#loadListView#0;class#packageViewController#0" expanded="false" />
-            <element signature="class#2130:2412" expanded="false" />
-            <element signature="method#handle#0;class#2130:2412" expanded="false" />
-            <element signature="method#removePackage#0;class#packageViewController#0" expanded="false" />
-            <element signature="method#idToItem#0;class#packageViewController#0" expanded="false" />
-            <element signature="method#loadPackages#0;class#packageViewController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/packageCreateController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="29" column="55" lean-forward="false" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="55" />
-          <folding>
-            <element signature="method#createPackage#0;class#packageCreateController#0" expanded="false" />
-            <element signature="method#calculateSummedPrice#0;class#packageCreateController#0" expanded="false" />
-            <element signature="method#insertItemToPackage#0;class#packageCreateController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/addItemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="51" column="29" lean-forward="false" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
-          <folding>
-            <element signature="method#initialize#0;class#addItemController#0" expanded="false" />
-            <element signature="method#backToHome#0;class#addItemController#0" expanded="false" />
-            <element signature="method#addItem#0;class#addItemController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/lendItem.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="30" column="47" lean-forward="false" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/datePicker.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
@@ -928,22 +792,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="166">
           <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/paymentChoose.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding>
-            <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-            <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-            <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-            <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1014,40 +862,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/search.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="54" column="136" lean-forward="false" selection-start-line="54" selection-start-column="136" selection-end-line="54" selection-end-column="136" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/updateItemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="354" column="5" lean-forward="false" selection-start-line="334" selection-start-column="3" selection-end-line="354" selection-end-column="5" />
-          <folding>
-            <element signature="e#1529#1540#0" expanded="false" />
-            <element signature="e#5296#5652#0" expanded="false" />
-            <element signature="method#loadListOfUsers#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#backToHome#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#updateItem#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#deleteItem#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#lendItem#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#getDateFormat#0;class#updateItemController#0" expanded="false" />
-            <element signature="method#strToDate#0;class#updateItemController#0" expanded="false" />
-            <marker date="1515193149168" expanded="false" signature="4697:5190" ph="..." />
-            <marker date="1515193149168" expanded="false" signature="5248:5654" ph="..." />
-            <marker date="1515193149168" expanded="false" signature="10066:10230" ph="{}" />
-            <marker date="1515193149168" expanded="false" signature="10068:10224" ph="//..." />
-            <marker date="1515193149168" expanded="false" signature="10263:10495" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/viewRequestController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="518">
@@ -1074,46 +888,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="101" column="17" lean-forward="false" selection-start-line="101" selection-start-column="17" selection-end-line="101" selection-end-column="17" />
-          <folding>
-            <element signature="method#viewRequests#0;class#Controller#0" expanded="false" />
-            <element signature="method#viewUserItemListPage#0;class#Controller#0" expanded="false" />
-            <element signature="e#5025#5058#0" expanded="false" />
-            <element signature="method#logout#0;class#Controller#0" expanded="false" />
-            <element signature="method#loginUser#0;class#Controller#0" expanded="false" />
-            <element signature="method#verifyUser#0;class#Controller#0" expanded="false" />
-            <element signature="method#clearRegistrationFields#0;class#Controller#0" expanded="false" />
-            <element signature="method#registerNewUser#0;class#Controller#0" expanded="false" />
-            <element signature="method#insertNewUser#0;class#Controller#0" expanded="false" />
-            <element signature="method#generateKey#0;class#Controller#0" expanded="false" />
-            <element signature="method#sendMail#0;class#Controller#0" expanded="false" />
-            <element signature="e#20715#21341#0" expanded="false" />
-            <element signature="method#registerPage#0;class#Controller#0" expanded="false" />
-            <element signature="method#loginPage#0;class#Controller#0" expanded="false" />
-            <element signature="method#searchPage#0;class#Controller#0" expanded="false" />
-            <element signature="method#editProfilePage#0;class#Controller#0" expanded="false" />
-            <element signature="method#switchScene#0;class#Controller#0" expanded="false" />
-            <element signature="method#showAlert#0;class#Controller#0" expanded="false" />
-            <element signature="method#backToMainPage#0;class#Controller#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/loanListController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="method#getOwnerToItem#0;class#loanListController#0" expanded="false" />
-            <element signature="method#getDescriptionToItem#0;class#loanListController#0" expanded="false" />
-            <element signature="method#backToHome#0;class#loanListController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/itemChoose.fxml">
       <provider selected="true" editor-type-id="JavaFX-Scene-Builder">
         <state />
@@ -1127,35 +901,230 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/paymentChoose.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding>
+            <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
+            <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#0;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
+            <element signature="n#HBox#0;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
+            <element signature="n#HBox#1;n#children#0;n#VBox#0;n#Pane#1;n#children#0;n#Pane#0;n#children#0;n#VBox#0;n#children#0;n#AnchorPane#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/loanList.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="904">
+          <caret line="61" column="51" lean-forward="true" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/search.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="53" column="81" lean-forward="false" selection-start-line="53" selection-start-column="81" selection-end-line="53" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/updateItem.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="61" column="57" lean-forward="false" selection-start-line="61" selection-start-column="57" selection-end-line="61" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/lendItem.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="20" column="62" lean-forward="false" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/addItemController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="51" column="29" lean-forward="false" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
+          <folding>
+            <element signature="method#initialize#0;class#addItemController#0" expanded="false" />
+            <element signature="method#backToHome#0;class#addItemController#0" expanded="false" />
+            <element signature="method#addItem#0;class#addItemController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/itemListController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding>
+            <element signature="method#initialize#0;class#itemListController#0" expanded="false" />
+            <element signature="method#backToHome#0;class#itemListController#0" expanded="false" />
+            <element signature="method#handleItemSelecting#0;class#itemListController#0" expanded="false" />
+            <element signature="method#createNewPackage#0;class#itemListController#0" expanded="false" />
+            <element signature="method#showPackages#0;class#itemListController#0" expanded="false" />
+            <element signature="method#addItem#0;class#itemListController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/loanListController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
+          <folding>
+            <element signature="method#initialize#0;class#loanListController#0" expanded="false" />
+            <element signature="method#getOwnerToItem#0;class#loanListController#0" expanded="false" />
+            <element signature="method#getDescriptionToItem#0;class#loanListController#0" expanded="false" />
+            <element signature="method#backToHome#0;class#loanListController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/packageCreateController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="29" column="55" lean-forward="false" selection-start-line="29" selection-start-column="55" selection-end-line="58" selection-end-column="5" />
+          <folding>
+            <element signature="method#createPackage#0;class#packageCreateController#0" expanded="false" />
+            <element signature="method#calculateSummedPrice#0;class#packageCreateController#0" expanded="false" />
+            <element signature="method#insertItemToPackage#0;class#packageCreateController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/packageViewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="46" column="41" lean-forward="false" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+          <folding>
+            <element signature="method#initialize#0;class#packageViewController#0" expanded="false" />
+            <element signature="method#loadListView#0;class#packageViewController#0" expanded="false" />
+            <element signature="method#removePackage#0;class#packageViewController#0" expanded="false" />
+            <element signature="method#idToItem#0;class#packageViewController#0" expanded="false" />
+            <element signature="method#loadPackages#0;class#packageViewController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/ProfileContoller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="89" column="52" lean-forward="false" selection-start-line="89" selection-start-column="52" selection-end-line="89" selection-end-column="52" />
+          <folding>
+            <element signature="method#initialize#0;class#ProfileContoller#0" expanded="false" />
+            <element signature="method#duplicateUserName#0;class#ProfileContoller#0" expanded="false" />
+            <element signature="method#backToHome#0;class#ProfileContoller#0" expanded="false" />
+            <element signature="method#updateUser#0;class#ProfileContoller#0" expanded="false" />
+            <element signature="method#updateUserInfo#0;class#ProfileContoller#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/searchController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="285" column="63" lean-forward="false" selection-start-line="285" selection-start-column="63" selection-end-line="285" selection-end-column="63" />
+        <state relative-caret-position="495">
+          <caret line="446" column="5" lean-forward="false" selection-start-line="446" selection-start-column="5" selection-end-line="446" selection-end-column="5" />
           <folding>
-            <element signature="method#addInfoToPane#0;class#searchController#0" expanded="false" />
-            <element signature="e#3924#3969#0" expanded="false" />
-            <element signature="method#setReturnPlusOne#0;class#searchController#0" expanded="false" />
-            <element signature="e#4554#4979#0" expanded="false" />
-            <element signature="e#5022#5340#0" expanded="false" />
-            <element signature="method#setPickerFromToday#0;class#searchController#0" expanded="false" />
-            <element signature="method#dateAlreadyTaken#0;class#searchController#0" expanded="false" />
-            <element signature="method#selectPayment#0;class#searchController#0" expanded="false" />
-            <element signature="method#backToHome#0;class#searchController#0" expanded="false" />
+            <element signature="method#initialize#0;class#searchController#0" expanded="false" />
             <element signature="method#search#0;class#searchController#0" expanded="false" />
             <element signature="method#searchLog#0;class#searchController#0" expanded="false" />
+            <element signature="method#searchItem#0;class#searchController#0" expanded="false" />
             <element signature="method#rowContainsQuery#0;class#searchController#0" expanded="false" />
             <element signature="method#handleItemSelecting#0;class#searchController#0" expanded="false" />
+            <element signature="method#disableTrading#0;class#searchController#0" expanded="false" />
+            <element signature="method#addInfoToPane#0;class#searchController#0" expanded="false" />
+            <element signature="e#9762#9807#0" expanded="false" />
+            <element signature="method#selectPayment#0;class#searchController#0" expanded="false" />
             <element signature="method#continueButton#0;class#searchController#0" expanded="false" />
             <element signature="method#moveToStepInLoanProcess#0;class#searchController#0" expanded="false" />
             <element signature="method#stepBackFromPayment#0;class#searchController#0" expanded="false" />
             <element signature="method#checkOut#0;class#searchController#0" expanded="false" />
             <element signature="method#sendRequestToOwner#0;class#searchController#0" expanded="false" />
+            <element signature="method#setReturnPlusOne#0;class#searchController#0" expanded="false" />
+            <element signature="e#14245#14670#0" expanded="false" />
+            <element signature="e#14713#15031#0" expanded="false" />
+            <element signature="method#setPickerFromToday#0;class#searchController#0" expanded="false" />
+            <element signature="method#dateAlreadyTaken#0;class#searchController#0" expanded="false" />
             <element signature="method#itemIsAvailable#0;class#searchController#0" expanded="false" />
+            <element signature="method#backToHome#0;class#searchController#0" expanded="false" />
             <element signature="class#Item#0;class#searchController#0" expanded="false" />
             <element signature="method#Item#0;class#Item#0;class#searchController#0" expanded="false" />
             <element signature="method#ownerOfItem#0;class#Item#0;class#searchController#0" expanded="false" />
             <element signature="method#ownerIDOfItem#0;class#Item#0;class#searchController#0" expanded="false" />
-            <marker date="1515233740110" expanded="false" signature="7600:8324" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <folding>
+            <element signature="method#initialize#0;class#Controller#0" expanded="false" />
+            <element signature="class#2347:2514" expanded="false" />
+            <element signature="class#2629:2802" expanded="false" />
+            <element signature="class#3510:3653" expanded="false" />
+            <element signature="class#3779:3928" expanded="false" />
+            <element signature="method#viewLoanedList#0;class#Controller#0" expanded="false" />
+            <element signature="method#viewUserItemListPage#0;class#Controller#0" expanded="false" />
+            <element signature="method#viewRequests#0;class#Controller#0" expanded="false" />
+            <element signature="method#logout#0;class#Controller#0" expanded="false" />
+            <element signature="method#loginUser#0;class#Controller#0" expanded="false" />
+            <element signature="method#verifyUser#0;class#Controller#0" expanded="false" />
+            <element signature="method#clearRegistrationFields#0;class#Controller#0" expanded="false" />
+            <element signature="method#registerNewUser#0;class#Controller#0" expanded="false" />
+            <element signature="method#insertNewUser#0;class#Controller#0" expanded="false" />
+            <element signature="method#generateKey#0;class#Controller#0" expanded="false" />
+            <element signature="method#sendMail#0;class#Controller#0" expanded="false" />
+            <element signature="e#20490#21116#0" expanded="false" />
+            <element signature="method#registerPage#0;class#Controller#0" expanded="false" />
+            <element signature="method#loginPage#0;class#Controller#0" expanded="false" />
+            <element signature="method#searchPage#0;class#Controller#0" expanded="false" />
+            <element signature="method#editProfilePage#0;class#Controller#0" expanded="false" />
+            <element signature="method#switchScene#0;class#Controller#0" expanded="false" />
+            <element signature="method#showAlert#0;class#Controller#0" expanded="false" />
+            <element signature="method#backToMainPage#0;class#Controller#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/updateItemController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="824">
+          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding>
+            <element signature="e#3214#3254#0" expanded="false" />
+            <element signature="method#backToHome#0;class#updateItemController#0" expanded="false" />
+            <element signature="method#updateItem#0;class#updateItemController#0" expanded="false" />
+            <element signature="method#deleteItem#0;class#updateItemController#0" expanded="false" />
+            <element signature="method#getDateFormat#0;class#updateItemController#0" expanded="false" />
+            <element signature="method#strToDate#0;class#updateItemController#0" expanded="false" />
+            <marker date="1515242482086" expanded="true" signature="4114:4625" ph="..." />
+            <marker date="1515242482086" expanded="true" signature="4689:5109" ph="..." />
+            <marker date="1515242482086" expanded="false" signature="9550:9714" ph="{}" />
+            <marker date="1515242482086" expanded="false" signature="9552:9708" ph="//..." />
+            <marker date="1515242482086" expanded="false" signature="9747:9979" ph="{...}" />
           </folding>
         </state>
       </provider>

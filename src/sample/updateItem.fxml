@@ -59,7 +59,7 @@
                            <GridPane.margin>
                               <Insets left="100.0" />
                            </GridPane.margin></ChoiceBox>
-                         <CheckBox fx:id="upd_available" onMouseClicked="#availabilityChange" focusTraversable="false" GridPane.rowIndex="5">
+                         <CheckBox fx:id="upd_available" focusTraversable="false" GridPane.rowIndex="5">
                            <GridPane.margin>
                               <Insets left="100.0" />
                            </GridPane.margin></CheckBox>

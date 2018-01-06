@@ -130,6 +130,15 @@ public class Controller {
         }
     }
 
+    //!Loaners
+    public void viewUserItemListPage() {
+        try {
+            switchScene("itemList.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void viewRequests() {
         Parent root = null;
@@ -147,24 +156,6 @@ public class Controller {
             e.printStackTrace();
         }
     }
-
-
-    //!Loaners
-    public void viewUserItemListPage() {
-        try {
-            switchScene("itemList.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-//    public void addItemPage() {
-//        try {
-//            switchScene("addItem.fxml","Everything4Rent", 700,450,"style.css");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
     //Global to all users

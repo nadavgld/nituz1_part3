@@ -29,6 +29,7 @@ public class searchController {
     private static Stage currentStage;
     private static int userID;
     private Controller c = new Controller();
+    private static long lastKeyPress;
 
     private static int selectedItemId;
     private static int selectedIdexnum;
@@ -121,106 +122,20 @@ public class searchController {
         }
     }
 
-    private void disableTrading() {
-        for(Toggle t: loanType.getToggles()){
-            RadioButton rb = (RadioButton)t;
-            if(rb.getText().equals("Trade") && !itemDescMap.get(selectedIdexnum).isTradable) {
-                rb.setDisable(true);
-                break;
-            }
-        }
-    }
 
-    private void addInfoToPane() {
-        //Loan Trade Free-Loan
-        switch (paymentType){
-            case "Loan":
-                loan_pane.setVisible(true);
-                loan_price.setText(loan_price.getText() + "" + itemDescMap.get(selectedIdexnum).getPrice());
-                setPickerFromToday(lend_from_loan);
-                setPickerFromToday(lend_to_loan);
-
-                setReturnPlusOne(lend_from_loan,lend_to_loan);
-
-                break;
-            case "Trade":
-//                free_pane.setVisible(true);
-//                setPickerFromToday(lend_from_loan);
-//                setPickerFromToday(lend_to_loan);
-//                setReturnPlusOne(lend_from_loan,lend_to_loan);
-
-                break;
-            case "Free-Loan":
-                free_pane.setVisible(true);
-                setPickerFromToday(lend_from_free);
-                setPickerFromToday(lend_to_free);
-                setReturnPlusOne(lend_from_free,lend_to_free);
-
-                break;
-        }
-    }
-
-    private void setReturnPlusOne(DatePicker from, DatePicker to) {
-        from.valueProperty().addListener((ov, oldValue, newValue) -> {
-            to.setValue(newValue);
-            to.setDayCellFactory(picker -> new DateCell() {
-                @Override
-                public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    setDisable(empty || date.isBefore(newValue)  || dateAlreadyTaken(date.atStartOfDay()));
-                }
-            });
-        });
-
-        to.valueProperty().addListener((ov, oldValue, newValue) -> {
-            try {
-                if (newValue.isBefore(from.getValue())) {
-                    to.setValue(oldValue);
-                    c.showAlert(Alert.AlertType.ERROR, "Date Error", "Cannot return item before lending");
-                }
-            }catch (Exception e){}
-        });
-    }
-
-    private void setPickerFromToday(DatePicker dp) {
-        dp.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                setDisable(empty || date.isBefore(LocalDate.now()) || dateAlreadyTaken(date.atStartOfDay()));
-            }
-        });
-    }
-
-    private boolean dateAlreadyTaken(LocalDateTime date) {
-        return !itemIsAvailable(date.minusDays(1), date.plusDays(1));
-    }
-
-    private void selectPayment() {
-        for(Toggle t: loanType.getToggles()){
-            RadioButton rb = (RadioButton)t;
-            if(rb.getText().equals(paymentType)) {
-                rb.setSelected(true);
-                break;
-            }
-        }
-    }
-
-    public void backToHome() {
-        try {
-            c.switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    //Searching
     public void search(KeyEvent keyEvent) {
-        if(keyEvent == null || keyEvent.getCode() == KeyCode.ENTER){
-            String query = searchQuery.getText().toLowerCase();
+        long kp = System.currentTimeMillis();
 
-            if(query.length() == 0) {
+//        if(keyEvent == null || keyEvent.getCode() == KeyCode.ENTER){
+
+        if(kp - lastKeyPress > 150) {
+
+            String query = searchQuery.getText().toLowerCase().trim();
+
+            if (query.length() == 0) {
                 search_list.getItems().clear();
-                search_list.getItems().add(0,"No item was found..");
+                search_list.getItems().add(0, "No item was found..");
                 return;
             }
 
@@ -229,6 +144,8 @@ public class searchController {
             search_list.setVisible(true);
             searchLog(query.trim());
         }
+        lastKeyPress = kp;
+//        }
     }
 
     private void searchLog(String query) {
@@ -326,7 +243,7 @@ public class searchController {
         int max = search_max_price.getText().length() == 0 ? Integer.MAX_VALUE : Integer.parseInt(search_max_price.getText());
 
         if(price){
-                res = res && min <= itemPrice && max >= itemPrice;
+            res = res && min <= itemPrice && max >= itemPrice;
         }
         return res;
     }
@@ -350,6 +267,56 @@ public class searchController {
             }
 
             moveToStepInLoanProcess("itemChoose.fxml", itemDescMap.get(selectedIdexnum).getDescription() + " - CheckOut");
+        }
+    }
+
+    //Checkout
+    private void disableTrading() {
+        for(Toggle t: loanType.getToggles()){
+            RadioButton rb = (RadioButton)t;
+            if(rb.getText().equals("Trade") && !itemDescMap.get(selectedIdexnum).isTradable) {
+                rb.setDisable(true);
+                break;
+            }
+        }
+    }
+
+    private void addInfoToPane() {
+        //Loan Trade Free-Loan
+        switch (paymentType){
+            case "Loan":
+                loan_pane.setVisible(true);
+                loan_price.setText(loan_price.getText() + "" + itemDescMap.get(selectedIdexnum).getPrice());
+                setPickerFromToday(lend_from_loan);
+                setPickerFromToday(lend_to_loan);
+
+                setReturnPlusOne(lend_from_loan,lend_to_loan);
+
+                break;
+            case "Trade":
+//                free_pane.setVisible(true);
+//                setPickerFromToday(lend_from_loan);
+//                setPickerFromToday(lend_to_loan);
+//                setReturnPlusOne(lend_from_loan,lend_to_loan);
+
+                break;
+            case "Free-Loan":
+                free_pane.setVisible(true);
+                setPickerFromToday(lend_from_free);
+                setPickerFromToday(lend_to_free);
+                setReturnPlusOne(lend_from_free,lend_to_free);
+
+                break;
+        }
+    }
+
+    private void selectPayment() {
+        for(Toggle t: loanType.getToggles()){
+            RadioButton rb = (RadioButton)t;
+            if(rb.getText().equals(paymentType)) {
+                rb.setSelected(true);
+                break;
+            }
         }
     }
 
@@ -442,6 +409,43 @@ public class searchController {
         return true;
     }
 
+    //Dates Validation
+    private void setReturnPlusOne(DatePicker from, DatePicker to) {
+        from.valueProperty().addListener((ov, oldValue, newValue) -> {
+            to.setValue(newValue);
+            to.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    setDisable(empty || date.isBefore(newValue)  || dateAlreadyTaken(date.atStartOfDay()));
+                }
+            });
+        });
+
+        to.valueProperty().addListener((ov, oldValue, newValue) -> {
+            try {
+                if (newValue.isBefore(from.getValue())) {
+                    to.setValue(oldValue);
+                    c.showAlert(Alert.AlertType.ERROR, "Date Error", "Cannot return item before lending");
+                }
+            }catch (Exception e){}
+        });
+    }
+
+    private void setPickerFromToday(DatePicker dp) {
+        dp.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()) || dateAlreadyTaken(date.atStartOfDay()));
+            }
+        });
+    }
+
+    private boolean dateAlreadyTaken(LocalDateTime date) {
+        return !itemIsAvailable(date.minusDays(1), date.plusDays(1));
+    }
+
     public static boolean itemIsAvailable(LocalDateTime from, LocalDateTime to) {
         Table table;
         try {
@@ -462,6 +466,14 @@ public class searchController {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public void backToHome() {
+        try {
+            c.switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class Item{

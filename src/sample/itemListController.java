@@ -81,28 +81,6 @@ public class itemListController {
 
     }
 
-    private void updatePackageLabel() {
-        amountOfPackages = getAmountOfPackages();
-        itemList_packagesNum.setText("Your Packages("+amountOfPackages+")");
-    }
-
-    private int getAmountOfPackages() {
-        Table table = null;
-        int counter = 0;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
-
-            for(Row row : table)
-                if (Integer.parseInt(row.get("ownerID").toString()) == userID)
-                    counter++;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return counter;
-    }
-
     public void backToHome() {
         try {
             c.switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
@@ -124,7 +102,6 @@ public class itemListController {
             try {
                 c.switchScene("updateItem.fxml","Everything4Rent", 700,450,"style.css");
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
