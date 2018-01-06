@@ -16,6 +16,7 @@ public class Main extends Application {
         root.getStylesheets().add(getClass().getResource("style.css").toString());
         primaryStage.setTitle("Everything4Rent");
         primaryStage.setScene(new Scene(root, 700, 450));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

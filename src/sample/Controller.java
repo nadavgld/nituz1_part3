@@ -73,22 +73,15 @@ public class Controller {
     public void initialize() {
         // initialization code here...
         if(home_logout != null && username != null){
+            alertAmountOfOpenRequest();
             home_logout.setText("Logout [" + username + "]");
 
             if(typeOfUser.equals("Loaner")){
                 home_items.setText("Loaned Items");
-                home_items.setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent t) {
-                        viewLoanedList();
-                    }
-                });
+                home_items.setOnAction(t -> viewLoanedList());
             }else{
                 home_items.setText("Your Items");
-                home_items.setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent t) {
-                        viewUserItemListPage();
-                    }
-                });
+                home_items.setOnAction(t -> viewUserItemListPage());
 
                 if(typeOfUser.equals("Both")) {
                     Label l = new Label("|");
@@ -96,7 +89,7 @@ public class Controller {
                     loanList.getStyleClass().addAll("link");
                     loanList.setTextFill(Paint.valueOf("#4f75ff"));
                     loanList.setUnderline(true);
-                    loanList.setOnMouseClicked((EventHandler<MouseEvent>) t -> viewLoanedList());
+                    loanList.setOnMouseClicked(t -> viewLoanedList());
 
                     home_hb.getChildren().addAll(l, loanList);
                 }
@@ -106,19 +99,45 @@ public class Controller {
         if(b_log != null && username != null){
             b_log.setText("Your Profile");
             b_reg.setText("Logout");
-            b_reg.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent t) {
-                    logout();
-                }
-            });
+            b_reg.setOnAction(t -> logout());
         }else if(b_log != null && username == null){
             b_log.setText("Login");
-            b_reg.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent t) {
-                    registerPage();
-                }
-            });
+            b_reg.setOnAction(t -> registerPage());
         }
+    }
+
+    private void alertAmountOfOpenRequest() {
+        int pending = 0;
+        int request = 0;
+
+        Table table;
+        try {
+            table = DatabaseBuilder.open(new File(dbPath)).getTable("requests");
+            for(Row row : table) {
+                if (Integer.parseInt(row.get("from").toString()) == userID && row.get("status").toString().equals("Pending"))
+                    pending++;
+
+                if (Integer.parseInt(row.get("to").toString()) == userID && row.get("status").toString().equals("Pending"))
+                    request++;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(pending == 0 && request == 0)
+            return;
+
+        String line = "Welcome back " + username + "! you have ";
+        if(pending > 0 & request > 0)
+            line += request + " requests waiting for your approval and " + pending + " unanswered request you've send";
+        else if(request > 0)
+            line += request + " requests waiting for your approval";
+        else
+            line += pending + " unanswered request you've send";
+
+        showAlert(Alert.AlertType.INFORMATION,"Opened Requests",line);
+
     }
 
     //Loaners

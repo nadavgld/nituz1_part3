@@ -21,7 +21,7 @@ public class viewRequestController {
     private String typeOfUser = c.typeOfUser;
 
     private HashMap<Integer,Integer> ownerRequests_id_index;
-    private int rowHeight = 60;
+    private int rowHeight = 52;
     @FXML
     private Accordion pv_accordion;
 
@@ -71,7 +71,9 @@ public class viewRequestController {
                     int reqID = Integer.parseInt(row.get("ID").toString());
 
                     Pair<String, String> itemDescription_Owner = loanListController.getDescriptionToItem(isPackage, itemID);
+
                     String tmura = row.get("tmura").toString().chars().allMatch(Character::isDigit) ? row.get("tmura").toString() + "$" : row.get("tmura").toString();
+                    tmura = loanListController.fixTmuraView(tmura);
 
                     String loaner = userIDToUsername(Integer.parseInt(row.get("from").toString()));
 
@@ -136,6 +138,7 @@ public class viewRequestController {
 
         boolean changed = false;
         try {
+            String tmura;
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
 
             for (Row row : table) {
@@ -148,6 +151,28 @@ public class viewRequestController {
                         lend.addRow(null, row.get("itemID").toString(), row.get("isPackage"),
                                 Integer.parseInt(row.get("from").toString()), row.get("startDate").toString(),
                                 row.get("returnDate").toString(), row.get("tmura").toString());
+
+                        tmura = row.get("tmura").toString();
+                        if(tmura.contains("_")) {
+                            if (tmura.split("_").length == 3) {
+                                int itemIDToTrade = Integer.parseInt(tmura.split("_")[0]);
+                                boolean isPackage = Integer.parseInt(tmura.split("_")[2]) != 0;
+
+                                int p = row.get("isPackage").toString().toLowerCase().equals("true") ? 1 : 0;
+                                lend.addRow(null, itemIDToTrade, isPackage,
+                                        userID, row.get("startDate").toString(),
+                                        row.get("returnDate").toString(), row.get("itemID").toString()+"_"+p);
+
+                            }else if(tmura.split("_").length == 2){
+                                int itemIDToTrade = Integer.parseInt(tmura.split("_")[0]);
+                                boolean isPackage = Integer.parseInt(tmura.split("_")[1]) != 0;
+
+                                int p = row.get("isPackage").toString().toLowerCase().equals("true") ? 1 : 0;
+                                lend.addRow(null, itemIDToTrade, isPackage,
+                                        userID, row.get("startDate").toString(),
+                                        row.get("returnDate").toString(), row.get("itemID").toString()+"_"+p);
+                            }
+                        }
                     }
 
                     c.showAlert(Alert.AlertType.INFORMATION,"Everything4Rent",newStatus + " Successfully");
@@ -194,7 +219,10 @@ public class viewRequestController {
                     int itemID = Integer.parseInt(row.get("itemID").toString());
 
                     Pair<String, String> itemDescription_Owner = loanListController.getDescriptionToItem(isPackage, itemID);
+
                     String tmura = row.get("tmura").toString().chars().allMatch(Character::isDigit) ? row.get("tmura").toString()+"$" : row.get("tmura").toString();
+                    tmura = loanListController.fixTmuraView(tmura);
+
                     String status = row.get("status").toString();
 
                     String reqTime = updateItemController.getDateFormat(updateItemController.strToDate(row.get("dateOfRequest").toString()));

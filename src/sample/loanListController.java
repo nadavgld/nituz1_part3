@@ -49,9 +49,11 @@ public class loanListController {
 
                     if(returnTime.isAfter(LocalDateTime.now()) || returnTime.isEqual(LocalDateTime.now())) {
 
-                        String price = (row.get("tmura").toString());
+                        String price = fixTmuraView(row.get("tmura").toString());
+
+
                         String str_price = price.equals("0") ? "Free" : price.chars().allMatch(Character::isDigit) ? price + "$" : price;
-                        boolean isPackage = row.get("isPackage").toString().toLowerCase().equals("true") ? true : false;
+                        boolean isPackage = row.get("isPackage").toString().toLowerCase().equals("true");
                         int itemID = Integer.parseInt(row.get("itemID").toString());
 
                         Pair<String, String> itemDescription_Owner = getDescriptionToItem(isPackage, itemID);
@@ -74,6 +76,27 @@ public class loanListController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String fixTmuraView(String price) {
+        if(price.contains("_")) {
+            if (price.split("_").length == 3) {
+                int itemIDToTrade = Integer.parseInt(price.split("_")[0]);
+                int extraMoney = Integer.parseInt(price.split("_")[1]);
+                boolean isPackage = Integer.parseInt(price.split("_")[2]) == 0 ? false : true;
+
+                String itemDesc = getDescriptionToItem(isPackage, itemIDToTrade).getKey();
+                price = itemDesc + " and extra " + extraMoney +"$";
+            }else if(price.split("_").length == 2){
+                int itemIDToTrade = Integer.parseInt(price.split("_")[0]);
+                boolean isPackage = Integer.parseInt(price.split("_")[1]) == 0 ? false : true;
+
+                String itemDesc = getDescriptionToItem(isPackage, itemIDToTrade).getKey();
+                price = itemDesc;
+            }
+        }
+
+        return price;
     }
 
     public static String getOwnerToItem(int ID) {

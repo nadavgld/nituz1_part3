@@ -6,6 +6,7 @@ import com.healthmarketscience.jackcess.Table;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class searchController {
     private static Stage currentStage;
@@ -38,6 +40,7 @@ public class searchController {
 
     private static Stage paymentStage;
     private static String paymentType;
+    private static HashMap<Integer,Item> tradeItems;
 
     @FXML
     private TextField searchQuery;
@@ -71,6 +74,8 @@ public class searchController {
     private Pane free_pane;
     @FXML
     private Pane loan_pane;
+    @FXML
+    private Pane trade_pane;
 
     @FXML
     private DatePicker lend_from_free;
@@ -88,6 +93,10 @@ public class searchController {
     private DatePicker lend_from_trade;
     @FXML
     private DatePicker lend_to_trade;
+    @FXML
+    private ChoiceBox lend_itemList;
+    @FXML
+    private TextField lend_money;
 
 
     public void initialize() {
@@ -119,9 +128,47 @@ public class searchController {
                 payment_type.setText(paymentType);
                 addInfoToPane();
             }
+
+            if(lend_itemList != null)
+                loadItemList();
         }
     }
 
+    private void loadItemList() {
+        tradeItems = new HashMap<>();
+        lend_itemList.setTooltip(new Tooltip("+ for Item, * for Packages"));
+
+        lend_itemList.getItems().add(0,"");
+        int i=1;
+
+        try {
+            Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
+            for(Row row: table){
+                if(Integer.parseInt(row.get("userID").toString()) == userID){
+                    Item item = itemRowToItem(row,false);
+
+                    lend_itemList.getItems().add(i,"+ " + item.getDescription() + " (" + item.getCategory() +") - " + item.getPrice());
+                    tradeItems.put(i,item);
+                    i++;
+                }
+            }
+
+            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
+            for(Row row: table){
+                if(Integer.parseInt(row.get("ownerID").toString()) == userID){
+                    Item item = itemRowToItem(row,true);
+
+                    lend_itemList.getItems().add(i,"* " + item.getDescription() + " (" + amountOfItemInPackage(item.getId()) +" items) - " + item.getPrice() +"$");
+                    tradeItems.put(i,item);
+                    i++;
+
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     //Searching
     public void search(KeyEvent keyEvent) {
@@ -294,10 +341,10 @@ public class searchController {
 
                 break;
             case "Trade":
-//                free_pane.setVisible(true);
-//                setPickerFromToday(lend_from_loan);
-//                setPickerFromToday(lend_to_loan);
-//                setReturnPlusOne(lend_from_loan,lend_to_loan);
+                trade_pane.setVisible(true);
+                setPickerFromToday(lend_from_trade);
+                setPickerFromToday(lend_to_trade);
+                setReturnPlusOne(lend_from_trade,lend_to_trade);
 
                 break;
             case "Free-Loan":
@@ -362,9 +409,37 @@ public class searchController {
         switch (paymentType){
             case "Loan":
                 success = sendRequestToOwner(lend_from_loan,lend_to_loan,"Loan",itemDescMap.get(selectedIdexnum).price);
-
                 break;
             case "Trade":
+                int itemIdex = 0;
+                int isPackage = -1;
+                if(lend_itemList.isVisible()){
+                    if(lend_itemList.getSelectionModel().getSelectedIndex() <= 0){
+                        c.showAlert(Alert.AlertType.ERROR,"Payment Error","If item-trade is checked, must choose an item");
+                        return;
+                    }else {
+                        itemIdex = lend_itemList.getSelectionModel().getSelectedIndex();
+                        isPackage = lend_itemList.getSelectionModel().getSelectedItem().toString().startsWith("+") ? 0 : 1;
+                    }
+                }
+
+                int amount = 0;
+                if(lend_money.isVisible()){
+                    try {
+                        amount = Integer.parseInt(lend_money.getText());
+                    }catch (Exception e){
+                        c.showAlert(Alert.AlertType.ERROR,"Payment Error","If extra-money is checked, must add a price");
+                        return;
+                    }
+                }
+
+                if(amount == 0 && itemIdex <= 0){
+                    c.showAlert(Alert.AlertType.ERROR,"Payment Error","Must pick at least one option of exchange");
+                    return;
+                }
+
+
+                success = sendRequestToOwner(lend_from_trade,lend_to_trade,"Trade",tradeItems.get(itemIdex).getId() +"_"+amount+"_"+isPackage);
                 break;
             case "Free-Loan":
                 success = sendRequestToOwner(lend_from_free,lend_to_free,"Giveaway","Free");
@@ -378,15 +453,39 @@ public class searchController {
     }
 
     private boolean sendRequestToOwner(DatePicker f, DatePicker t, String type, String tmura) {
-        LocalDateTime from = f.getValue().atStartOfDay();
-        LocalDateTime to = t.getValue().atStartOfDay().isEqual(from) ? t.getValue().plusDays(1).atStartOfDay() : t.getValue().atStartOfDay();
+        int itemInExchange = -1;
+        int extraMoney;
+        int isPackage;
 
+        if(type.equals("Trade")) {
+            itemInExchange = Integer.parseInt(tmura.split("_")[0]);
+            extraMoney = Integer.parseInt(tmura.split("_")[1]);
+            isPackage = Integer.parseInt(tmura.split("_")[2]);
+
+            tmura = itemInExchange > 0 && extraMoney > 0 ? tmura : itemInExchange <= 0 ? ""+extraMoney : itemInExchange+"_"+isPackage;
+        }
+
+        LocalDateTime from = null;
+        LocalDateTime to = null;
+        try {
+            from = f.getValue().atStartOfDay();
+            to = t.getValue().atStartOfDay().isEqual(from) ? t.getValue().plusDays(1).atStartOfDay() : t.getValue().atStartOfDay();
+        }catch (Exception e){
+            c.showAlert(Alert.AlertType.ERROR,"Date Error","Must pick Start and Return date");
+            return false;
+        }
         if(to.isBefore(from)){
             c.showAlert(Alert.AlertType.ERROR,"Date Error","Cannot return item before lending");
             return false;
         }
 
-        if(itemIsAvailable(from,to)){
+        if(type.equals("Trade") && !itemIsAvailable(itemInExchange,from,to)){
+            c.showAlert(Alert.AlertType.ERROR,"Exchange Error","The item you chose is already booked in the dates");
+            return false;
+        }
+
+
+        if(itemIsAvailable(selectedItemId,from,to)){
             try {
                 Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
 
@@ -408,6 +507,21 @@ public class searchController {
         }
         return true;
     }
+
+    public void toggleMoneyField(ActionEvent actionEvent) {
+        if(lend_money.isVisible())
+            lend_money.setVisible(false);
+        else
+            lend_money.setVisible(true);
+    }
+
+    public void toggleItemList(ActionEvent actionEvent) {
+        if(lend_itemList.isVisible())
+            lend_itemList.setVisible(false);
+        else
+            lend_itemList.setVisible(true);
+    }
+
 
     //Dates Validation
     private void setReturnPlusOne(DatePicker from, DatePicker to) {
@@ -443,15 +557,17 @@ public class searchController {
     }
 
     private boolean dateAlreadyTaken(LocalDateTime date) {
-        return !itemIsAvailable(date.minusDays(1), date.plusDays(1));
+        return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1));
     }
 
-    public static boolean itemIsAvailable(LocalDateTime from, LocalDateTime to) {
+    public static boolean itemIsAvailable(int id,LocalDateTime from, LocalDateTime to) {
         Table table;
+        HashSet<Integer> relevantIDs = checkIfItemInPackage(id);
+        relevantIDs.add(id);
         try {
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
             for(Row row : table) {
-                if (Integer.parseInt(row.get("itemID").toString()) == selectedItemId) {
+                if (relevantIDs.contains(Integer.parseInt(row.get("itemID").toString()))) {
                     LocalDateTime startTime = updateItemController.strToDate(row.get("startTime").toString());
                     LocalDateTime returnTime = updateItemController.strToDate(row.get("returnTime").toString());
 
@@ -468,12 +584,71 @@ public class searchController {
         return true;
     }
 
+    private static HashSet<Integer> checkIfItemInPackage(int selectedItemId) {
+        HashSet<Integer> hs = new HashSet<>();
+        Table table;
+        try {
+            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
+            for(Row row : table) {
+                if ((Integer.parseInt(row.get("itemID").toString())) == selectedItemId) {
+                    hs.add(Integer.parseInt(row.get("packageID").toString()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return hs;
+    }
+
     public void backToHome() {
         try {
             c.switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void tradeAmountValidation(KeyEvent keyEvent) {
+        String field = lend_money.getText();
+        if(!field.chars().allMatch(Character::isDigit)){
+            c.showAlert(Alert.AlertType.ERROR,"Payment Error","Amount must be numbers only");
+            lend_money.setText(field.substring(0,field.length()-1));
+            lend_money.positionCaret(field.length()-1);
+        }
+    }
+
+
+    //Item class
+    private int amountOfItemInPackage(int packageID) {
+        Table table = null;
+        int counter = 0;
+        try {
+            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
+
+            for(Row row: table){
+                if(Integer.parseInt(row.get("packageID").toString()) == packageID){
+                    counter++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return counter;
+    }
+
+    private Item itemRowToItem(Row row, boolean pack) {
+        String desc = row.get("Description").toString();
+        String price = row.get("Price").toString();
+        String cat = pack ? "" : row.get("Category").toString();
+        String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
+        boolean b_a = avaiable.equals("is available") ? true : false;
+        String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
+        boolean b_t = tradable.equals("is tradable") ? true : false;
+        String type = pack ? "packages" : "items";
+
+        return new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,type);
     }
 
     private class Item{
