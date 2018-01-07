@@ -143,6 +143,9 @@ public class viewRequestController {
 
             for (Row row : table) {
                 if (Integer.parseInt(row.get("ID").toString()) == reqID) {
+
+                    //TODO: check if request suits with the approval on specific dates with those items(!!)
+
                     row.put("status", newStatus);
                     table.updateRow(row);
 

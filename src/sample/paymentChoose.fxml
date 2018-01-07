@@ -38,7 +38,13 @@
                             <HBox prefHeight="11.0" prefWidth="360.0" spacing="12">
                                 <children>
                                     <Label text="From" />
-                                    <DatePicker fx:id="lend_from_free" editable="false" prefWidth="150" showWeekNumbers="true" />
+                                    <DatePicker fx:id="lend_from_free" editable="false" prefWidth="150" showWeekNumbers="true">
+                                        <opaqueInsets>
+                                            <Insets />
+                                        </opaqueInsets>
+                                        <HBox.margin>
+                                            <Insets left="4.0" />
+                                        </HBox.margin></DatePicker>
                                 </children>
                                 <VBox.margin>
                                     <Insets />
@@ -72,7 +78,13 @@
                            <HBox prefHeight="11.0" prefWidth="360.0" spacing="12">
                                <children>
                                    <Label text="From" />
-                                   <DatePicker fx:id="lend_from_loan" editable="false" prefWidth="150" showWeekNumbers="true" />
+                                   <DatePicker fx:id="lend_from_loan" editable="false" prefWidth="150" showWeekNumbers="true">
+                                       <opaqueInsets>
+                                           <Insets />
+                                       </opaqueInsets>
+                                       <HBox.margin>
+                                           <Insets left="4.0" />
+                                       </HBox.margin></DatePicker>
                                </children>
                                <VBox.margin>
                                    <Insets />
@@ -102,31 +114,10 @@
                                        <Insets bottom="5.0" left="15.0" />
                                    </VBox.margin>
                                </Label>
-                               <HBox prefHeight="11.0" prefWidth="360.0" spacing="12">
-                                   <children>
-                                       <Label text="From" />
-                                       <DatePicker fx:id="lend_from_trade" editable="false" prefWidth="150" showWeekNumbers="true" />
-                                   </children>
-                                   <VBox.margin>
-                                       <Insets />
-                                   </VBox.margin>
-                                   <padding>
-                                       <Insets left="15.0" />
-                                   </padding>
-                               </HBox>
-                               <HBox prefHeight="20.0" prefWidth="360.0" spacing="30">
-                                   <children>
-                                       <Label text="To" />
-                                       <DatePicker fx:id="lend_to_trade" editable="false" prefWidth="150" showWeekNumbers="true" />
-                                   </children>
-                                   <padding>
-                                       <Insets left="15.0" />
-                                   </padding>
-                               </HBox>
                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="30">
                               <children>
-                                 <CheckBox mnemonicParsing="false" onAction="#toggleItemList" text="Item from your list" />
-                                 <ChoiceBox fx:id="lend_itemList" prefWidth="150.0" visible="false" />
+                                 <CheckBox disable="true" mnemonicParsing="false" onAction="#toggleItemList" selected="true" text="Item from your list" />
+                                 <ChoiceBox fx:id="lend_itemList" prefWidth="150.0" />
                               </children>
                                <padding>
                                    <Insets left="15.0" />
@@ -144,6 +135,33 @@
                                    <Insets left="15.0" />
                                </padding>
                            </HBox>
+                               <HBox prefHeight="11.0" prefWidth="360.0" spacing="12">
+                                   <children>
+                                       <Label text="From" />
+                                       <DatePicker fx:id="lend_from_trade" editable="false" prefWidth="150" showWeekNumbers="true">
+                                    <opaqueInsets>
+                                       <Insets />
+                                    </opaqueInsets>
+                                    <HBox.margin>
+                                       <Insets left="4.0" />
+                                    </HBox.margin></DatePicker>
+                                   </children>
+                                   <VBox.margin>
+                                       <Insets />
+                                   </VBox.margin>
+                                   <padding>
+                                       <Insets left="15.0" />
+                                   </padding>
+                               </HBox>
+                               <HBox prefHeight="20.0" prefWidth="360.0" spacing="30">
+                                   <children>
+                                       <Label text="To" />
+                                       <DatePicker fx:id="lend_to_trade" editable="false" prefWidth="150" showWeekNumbers="true" />
+                                   </children>
+                                   <padding>
+                                       <Insets left="15.0" />
+                                   </padding>
+                               </HBox>
                            </children>
                        </VBox>
                    </Pane>

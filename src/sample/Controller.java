@@ -73,7 +73,6 @@ public class Controller {
     public void initialize() {
         // initialization code here...
         if(home_logout != null && username != null){
-            alertAmountOfOpenRequest();
             home_logout.setText("Logout [" + username + "]");
 
             if(typeOfUser.equals("Loaner")){
@@ -214,6 +213,8 @@ public class Controller {
                     }else{
                         username = row.get("Username").toString();
                         userID = Integer.parseInt(row.get("ID").toString());
+                        alertAmountOfOpenRequest();
+
                         switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
                     }
 

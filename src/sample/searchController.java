@@ -41,6 +41,7 @@ public class searchController {
     private static Stage paymentStage;
     private static String paymentType;
     private static HashMap<Integer,Item> tradeItems;
+    private static int itemInExchange;
 
     @FXML
     private TextField searchQuery;
@@ -124,13 +125,15 @@ public class searchController {
             if(paymentType != null)
                 selectPayment();
         }else if(payment_type != null){
+            itemInExchange = -1;
+
+            if(lend_itemList != null)
+                loadItemList();
+
             if(paymentType != null) {
                 payment_type.setText(paymentType);
                 addInfoToPane();
             }
-
-            if(lend_itemList != null)
-                loadItemList();
         }
     }
 
@@ -138,8 +141,14 @@ public class searchController {
         tradeItems = new HashMap<>();
         lend_itemList.setTooltip(new Tooltip("+ for Item, * for Packages"));
 
-        lend_itemList.getItems().add(0,"");
-        int i=1;
+        lend_itemList.setOnAction(event ->{
+            itemInExchange = tradeItems.get(lend_itemList.getSelectionModel().getSelectedIndex()).getId();
+            setPickerFromToday(lend_from_trade);
+            setPickerFromToday(lend_to_trade);
+        });
+
+//        lend_itemList.getItems().add(0,"");
+        int i=0;
 
         try {
             Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
@@ -167,7 +176,8 @@ public class searchController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        lend_itemList.getSelectionModel().selectFirst();
+        itemInExchange = tradeItems.get(0).getId();
     }
 
     //Searching
@@ -453,7 +463,7 @@ public class searchController {
     }
 
     private boolean sendRequestToOwner(DatePicker f, DatePicker t, String type, String tmura) {
-        int itemInExchange = -1;
+        itemInExchange = -1;
         int extraMoney;
         int isPackage;
 
@@ -557,7 +567,7 @@ public class searchController {
     }
 
     private boolean dateAlreadyTaken(LocalDateTime date) {
-        return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1));
+        return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1)) || !itemIsAvailable(itemInExchange,date.minusDays(1), date.plusDays(1));
     }
 
     public static boolean itemIsAvailable(int id,LocalDateTime from, LocalDateTime to) {
@@ -567,9 +577,10 @@ public class searchController {
         try {
             table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
             for(Row row : table) {
-                if (relevantIDs.contains(Integer.parseInt(row.get("itemID").toString()))) {
-                    LocalDateTime startTime = updateItemController.strToDate(row.get("startTime").toString());
-                    LocalDateTime returnTime = updateItemController.strToDate(row.get("returnTime").toString());
+                LocalDateTime startTime = updateItemController.strToDate(row.get("startTime").toString());
+                LocalDateTime returnTime = updateItemController.strToDate(row.get("returnTime").toString());
+
+                if (relevantIDs.contains(Integer.parseInt(row.get("itemID").toString())) && returnTime.isAfter(LocalDateTime.now().minusDays(1))) {
 
                     if((from.isBefore(returnTime) && (from.isAfter(startTime) || from.isEqual(startTime)))
                             ||  (from.isBefore(returnTime) && to.isAfter(startTime))
@@ -592,6 +603,9 @@ public class searchController {
             for(Row row : table) {
                 if ((Integer.parseInt(row.get("itemID").toString())) == selectedItemId) {
                     hs.add(Integer.parseInt(row.get("packageID").toString()));
+                }
+                if ((Integer.parseInt(row.get("packageID").toString())) == selectedItemId) {
+                    hs.add(Integer.parseInt(row.get("itemID").toString()));
                 }
             }
         } catch (IOException e) {
