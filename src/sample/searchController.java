@@ -424,7 +424,7 @@ public class searchController {
                 int itemIdex = 0;
                 int isPackage = -1;
                 if(lend_itemList.isVisible()){
-                    if(lend_itemList.getSelectionModel().getSelectedIndex() <= 0){
+                    if(lend_itemList.getSelectionModel().getSelectedIndex() < 0){
                         c.showAlert(Alert.AlertType.ERROR,"Payment Error","If item-trade is checked, must choose an item");
                         return;
                     }else {
@@ -457,6 +457,9 @@ public class searchController {
         }
 
         if(success){
+            itemInExchange = -1;
+            paymentType = null;
+
             Stage s = (Stage) payment_type.getScene().getWindow();
             s.close();
         }

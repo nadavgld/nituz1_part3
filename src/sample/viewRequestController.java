@@ -145,6 +145,28 @@ public class viewRequestController {
                 if (Integer.parseInt(row.get("ID").toString()) == reqID) {
 
                     //TODO: check if request suits with the approval on specific dates with those items(!!)
+                    boolean valid = searchController.itemIsAvailable(Integer.parseInt(row.get("itemID").toString()),
+                                                            updateItemController.strToDate(row.get("startDate").toString()),
+                                                            updateItemController.strToDate(row.get("returnDate").toString()));
+
+                    tmura = row.get("tmura").toString();
+                    if(tmura.contains("_")) {
+                            int itemIDToTrade = Integer.parseInt(tmura.split("_")[0]);
+
+                            valid = valid && searchController.itemIsAvailable(itemIDToTrade,
+                                    updateItemController.strToDate(row.get("startDate").toString()),
+                                    updateItemController.strToDate(row.get("returnDate").toString()));
+                    }
+
+                    if(!valid && approved){
+                        c.showAlert(Alert.AlertType.ERROR,"Request approving Error","One of the items in the deal is booked in the selected dates, the request will be declined automatically");
+                        row.put("status", "Declined");
+                        table.updateRow(row);
+
+                        pv_accordion.getPanes().remove(1);
+                        loadRequestToApprove();
+                        return;
+                    }
 
                     row.put("status", newStatus);
                     table.updateRow(row);
@@ -155,7 +177,6 @@ public class viewRequestController {
                                 Integer.parseInt(row.get("from").toString()), row.get("startDate").toString(),
                                 row.get("returnDate").toString(), row.get("tmura").toString());
 
-                        tmura = row.get("tmura").toString();
                         if(tmura.contains("_")) {
                             if (tmura.split("_").length == 3) {
                                 int itemIDToTrade = Integer.parseInt(tmura.split("_")[0]);
