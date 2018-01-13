@@ -15,15 +15,22 @@
 
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <GridPane alignment="center" hgap="10" prefHeight="457.0" prefWidth="699.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ProfileContoller">
    <children>
       <BorderPane prefHeight="462.0" prefWidth="699.0">
          <top>
-            <Label text="Everything4Rent" textAlignment="CENTER" textFill="RED" underline="true" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Dubai Regular" size="24.0" />
-               </font>
-            </Label>
+            <!--<Label text="Everything4Rent" textAlignment="CENTER" textFill="RED" underline="true" BorderPane.alignment="CENTER">-->
+               <!--<font>-->
+                  <!--<Font name="Dubai Regular" size="24.0" />-->
+               <!--</font>-->
+            <!--</Label>-->
+             <ImageView fitHeight="105.0" fitWidth="312.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                 <image>
+                     <Image url="@../logo.png" />
+                 </image>
+             </ImageView>
          </top>
          <bottom>
          </bottom>

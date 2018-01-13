@@ -127,7 +127,7 @@ public class searchController {
         }else if(payment_type != null){
             itemInExchange = -1;
 
-            if(lend_itemList != null)
+            if(lend_itemList != null && paymentType.equals("Trade"))
                 loadItemList();
 
             if(paymentType != null) {

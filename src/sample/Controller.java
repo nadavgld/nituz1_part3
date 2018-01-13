@@ -253,6 +253,8 @@ public class Controller {
                         row.put("Verification", true);
                         table.updateRow(row);
                         userID = Integer.parseInt(row.get("ID").toString());
+                        username = row.get("Username").toString();
+
                         model.setUserID(userID);
 
                         showAlert(Alert.AlertType.INFORMATION, "Everything4Rent", "Your user has been verified");
