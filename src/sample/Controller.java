@@ -28,13 +28,16 @@ import java.util.regex.Pattern;
 
 
 public class Controller {
+    public static Stage currentStage = Main.currentStage;
+    private Model model = Main.model;
+
     public static String username = null;
     public static String verifyUser;
     public static int userID = -1;
-    public static Stage currentStage = Main.currentStage;
     public static String dbPath = ".\\ndb.mdb";
     public final static String[] choices = {"Real Estate","2nd Hand Goods","Vehicles", "Pets"};
     public static String typeOfUser = null;
+
 
     public static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String lower = upper.toLowerCase();
@@ -71,7 +74,6 @@ public class Controller {
     private HBox home_hb;
 
     public void initialize() {
-        // initialization code here...
         if(home_logout != null && username != null){
             home_logout.setText("Logout [" + username + "]");
 
@@ -100,6 +102,7 @@ public class Controller {
             b_reg.setText("Logout");
             b_reg.setOnAction(t -> logout());
         }else if(b_log != null && username == null){
+            model.setDBPath(dbPath);
             b_log.setText("Login");
             b_reg.setOnAction(t -> registerPage());
         }
@@ -111,7 +114,7 @@ public class Controller {
 
         Table table;
         try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("requests");
+            table = model.getDBtable("requests");
             for(Row row : table) {
                 if (Integer.parseInt(row.get("from").toString()) == userID && row.get("status").toString().equals("Pending"))
                     pending++;
@@ -199,7 +202,7 @@ public class Controller {
 
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
+            table = model.getDBtable("users");
             for(Row row : table) {
                 if (row.get("Username").toString().toLowerCase().equals(name.toLowerCase()) && row.get("Password").toString().equals(pass)) {
                     found = true;
@@ -213,6 +216,9 @@ public class Controller {
                     }else{
                         username = row.get("Username").toString();
                         userID = Integer.parseInt(row.get("ID").toString());
+
+                        model.setUserID(userID);
+
                         alertAmountOfOpenRequest();
 
                         switchScene("home.fxml","Everything4Rent", 700,450,"style.css");
@@ -236,8 +242,9 @@ public class Controller {
         boolean found = false;
         boolean verified = false;
         Table table = null;
+
         try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
+            table = model.getDBtable("users");
             for (Row row : table) {
                 if (row.get("Username").toString().toLowerCase().equals(verifyUser.toLowerCase())) {
                     found = true;
@@ -246,6 +253,7 @@ public class Controller {
                         row.put("Verification", true);
                         table.updateRow(row);
                         userID = Integer.parseInt(row.get("ID").toString());
+                        model.setUserID(userID);
 
                         showAlert(Alert.AlertType.INFORMATION, "Everything4Rent", "Your user has been verified");
                         switchScene("home.fxml", "Everything4Rent", 700, 450, "style.css");
@@ -303,22 +311,22 @@ public class Controller {
     }
 
     private void insertNewUser(String name, String pass, String mail, String type) {
-        Boolean found = false;
+        Boolean found;
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(dbPath)).getTable("users");
-            for(Row row : table) {
-                if (row.get("Username").toString().equals(name)) {
-                    showAlert(Alert.AlertType.ERROR, "Registration Error", "Username already exists");
-                    found = true;
-                    break;
-                }
-            }
+            found = model.checkIfUsernameExists(name,"users");
+
+            if(found)
+                showAlert(Alert.AlertType.ERROR, "Registration Error", "Username already exists");
 
             if(!found) {
                 String userKey = generateKey();
+
+                table = model.getDBtable("users");
                 table.addRow(null, name, pass,mail,0,userKey, type);
+
                 sendMail(mail, name, userKey);
+
                 typeOfUser = type;
                 showAlert(Alert.AlertType.INFORMATION,"Registration completed", name + ", Welcome to Everything4Rent\nan E-Mail with details is on it's way\n(You might find it on 'spam' folder)");
 
@@ -336,7 +344,7 @@ public class Controller {
         Random r = new Random();
 
         for(int i=0;i<10;i++) {
-            sb.append(alphanum.charAt(r.nextInt(alphanum.length()) + 1));
+            sb.append(alphanum.charAt(r.nextInt(alphanum.length())));
             if(i==4)
                 sb.append("-");
         }

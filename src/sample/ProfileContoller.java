@@ -22,6 +22,7 @@ public class ProfileContoller {
     private static int userID;
     private static String username;
     private Controller c = new Controller();
+    private Model model = Main.model;
 
     @FXML
     private TextField edit_name;
@@ -33,14 +34,13 @@ public class ProfileContoller {
     private ToggleGroup userType;
 
     public void initialize() {
-        // initialization code here...
         currentStage = Controller.currentStage;
         userID = Controller.userID;
         username = Controller.username;
 
-        Table table = null;
+        Table table;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
+            table = model.getDBtable("users");
             for(Row row : table) {
                 if (Integer.parseInt(row.get("ID").toString()) == userID) {
                     edit_email.setText(row.get("Email").toString());
@@ -61,22 +61,18 @@ public class ProfileContoller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private boolean duplicateUserName(String name) {
-        Table table = null;
+        boolean isDuplicated = false;
+
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
-            for(Row row : table) {
-                if (row.get("Username").toString().equals(name)) {
-                    return true;
-                }
-            }
+            isDuplicated = model.checkIfUsernameExists(name,"users");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+
+        return isDuplicated;
     }
 
     public void backToHome() {
@@ -116,31 +112,15 @@ public class ProfileContoller {
             c.showAlert(Alert.AlertType.WARNING,"Update Error","All fields must be filled");
         }else{
             c.typeOfUser = type;
-            updateUserInfo(name,pass,mail, type);
-        }
-    }
 
-    private void updateUserInfo(String name, String pass, String mail, String type) {
-        Table table = null;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
-            for(Row row : table) {
-                if (Integer.parseInt(row.get("ID").toString()) == userID) {
-                    row.put("Username", name);
-                    row.put("Email", mail);
-                    row.put("Password", pass);
-                    row.put("userType", type);
-
-                    table.updateRow(row);
-                    c.showAlert(Alert.AlertType.INFORMATION,"Update Complete","Update Complete");
-                    backToHome();
-
-                    break;
-                }
+            try {
+                model.updateUserInfo("users",name,pass,mail, type);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            c.showAlert(Alert.AlertType.INFORMATION,"Update Complete","Update Complete");
+            backToHome();
         }
     }
-
 }

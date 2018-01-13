@@ -17,13 +17,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class loanListController {
-    private static Stage currentStage;
     private static int userID;
-    private static String username;
     private Controller c = new Controller();
     private HashMap<Integer,Integer> itemMap;
+    private static Model model = Main.model;
 
-    public static int selectedItemId;
 
     @FXML
     private ListView<String> itemList_list;
@@ -31,15 +29,12 @@ public class loanListController {
     private Label totalDeals;
 
     public void initialize() {
-        currentStage = Controller.currentStage;
         userID = Controller.userID;
-        username = Controller.username;
-
         itemMap = new HashMap<>();
 
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
+            table = model.getDBtable("lending");
             int i = 0;
             int expiredDeals = 0;
             for(Row row : table) {
@@ -104,7 +99,7 @@ public class loanListController {
 
         Table table;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
+            table = model.getDBtable("users");
             for(Row row : table) {
                 if (Integer.parseInt(row.get("ID").toString()) == ID) {
                     res = row.get("Username").toString();
@@ -125,7 +120,7 @@ public class loanListController {
         String t = isPackage ? "packages" : "items";
         String ownerId = isPackage ? "ownerID" : "userID";
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable(t);
+            table = model.getDBtable(t);
             for(Row row : table) {
                 if (Integer.parseInt(row.get("ID").toString()) == itemID) {
                     String desc = row.get("Description").toString();

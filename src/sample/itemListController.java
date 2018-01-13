@@ -25,7 +25,6 @@ import java.util.HashMap;
 public class itemListController {
     private static Stage currentStage;
     private static int userID;
-    private static String username;
     private Controller c = new Controller();
     private HashMap<Integer,Integer> itemMap;
 
@@ -33,28 +32,23 @@ public class itemListController {
     public static String packageToCreate;
     public ObservableList<Integer> selectedItems;
     public static ArrayList<Integer> selectedIdexes;
+    private Model model = Main.model;
 
-    private int amountOfPackages;
 
     @FXML
     private ListView<String> itemList_list;
     @FXML
     private TextField itemList_packageName;
-    @FXML
-    private Label itemList_packagesNum;
 
     public void initialize() {
         itemList_list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         itemMap = new HashMap<>();
         currentStage = Controller.currentStage;
         userID = Controller.userID;
-        username = Controller.username;
-
-//        updatePackageLabel();
 
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
+            table = model.getDBtable("items");
             int i = 0;
             for(Row row : table) {
                 if (Integer.parseInt(row.get("userID").toString()) == userID) {
@@ -130,10 +124,10 @@ public class itemListController {
 
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
+            table = model.getDBtable("packages");
             for(Row row : table) {
                 if (Integer.parseInt(row.get("ownerID").toString()) == userID) {
-                    if(row.get("description").toString().equals(pName)){
+                    if(row.get("Description").toString().equals(pName)){
                         c.showAlert(Alert.AlertType.WARNING,"Package Creation Error", "Cannot duplicate packages name");
                         return;
                     }

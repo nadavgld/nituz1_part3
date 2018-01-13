@@ -25,11 +25,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class updateItemController {
-    private static Stage currentStage;
-    private static int userID;
-    private static String username;
     private Controller c = new Controller();
     private static int selectedItemId;
+    private Model model = Main.model;
 
     private static int loanerID = -1;
 
@@ -47,9 +45,6 @@ public class updateItemController {
 
     public void initialize() {
         if(upd_cat != null) {
-            currentStage = Controller.currentStage;
-            userID = Controller.userID;
-            username = Controller.username;
             selectedItemId = itemListController.selectedItemId;
 
             LinkedList<String> s = new LinkedList<>(Arrays.asList(c.choices));
@@ -61,7 +56,7 @@ public class updateItemController {
 
             Table table = null;
             try {
-                table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
+                table = model.getDBtable("items");
                 for (Row row : table) {
                     if (Integer.parseInt(row.get("ID").toString()) == selectedItemId) {
                         String desc = row.get("Description").toString();
@@ -69,8 +64,6 @@ public class updateItemController {
                         String cat = row.get("Category").toString();
                         boolean available = row.get("isAvailable").toString().toLowerCase().equals("true") ? true : false;
                         boolean tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? true : false;
-
-                        loanerID = Integer.parseInt(row.get("lendingID").toString());
 
                         upd_description.setText(desc);
                         upd_price.setText(price.substring(0, price.length() - 1));
@@ -89,51 +82,8 @@ public class updateItemController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        }else if(lend_filter != null){
-//            //Initiate full list of users
-//            loadListOfUsers("");
-//
-//            //Validate From cannot be before today
-//            lend_from.setDayCellFactory(picker -> new DateCell() {
-//                @Override
-//                public void updateItem(LocalDate date, boolean empty) {
-//                    super.updateItem(date, empty);
-//                    setDisable(empty || date.isBefore(LocalDate.now()));
-//                }
-//            });
-//
-//            lend_to.setDayCellFactory(picker -> new DateCell() {
-//                @Override
-//                public void updateItem(LocalDate date, boolean empty) {
-//                    super.updateItem(date, empty);
-//                    setDisable(empty || date.isBefore(LocalDate.now()));
-//                }
-//            });
-//
-//            //Return day is Taking day +1
-//            lend_from.valueProperty().addListener((ov, oldValue, newValue) -> {
-//                lend_to.setValue(newValue.plusDays(1));
-//                lend_to.setDayCellFactory(picker -> new DateCell() {
-//                    @Override
-//                    public void updateItem(LocalDate date, boolean empty) {
-//                        super.updateItem(date, empty);
-//                        setDisable(empty || date.isBefore(newValue));
-//                    }
-//                });
-//            });
-//
-//            //Validate Return date is not before taking
-//            lend_to.valueProperty().addListener((ov, oldValue, newValue) -> {
-//                try {
-//                    if (newValue.isBefore(lend_from.getValue())) {
-//                        lend_to.setValue(oldValue);
-//                        c.showAlert(Alert.AlertType.ERROR, "Date Error", "Cannot return item before lending");
-//                    }
-//                }catch (Exception e){}
-//            });
         }
     }
-
 
     public void backToHome() {
         try {
@@ -143,7 +93,7 @@ public class updateItemController {
         }
     }
 
-    public void updateItem(ActionEvent actionEvent) {
+    public void updateItem() {
         String desc = upd_description.getText();
         String price = upd_price.getText();
         String cat = upd_cat.getValue().toString();
@@ -162,182 +112,25 @@ public class updateItemController {
             return;
         }
 
-        Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
-            for(Row row : table) {
-                if (Integer.parseInt(row.get("ID").toString()) == selectedItemId) {
-                    row.put("Description",desc);
-                    row.put("Price",price+"$");
-                    row.put("isAvailable",available);
-                    row.put("Category",cat);
-                    row.put("isTradable",trade);
-
-                    table.updateRow(row);
-                    c.showAlert(Alert.AlertType.INFORMATION,"Item Update Complete","Item update completed successfully");
-                    backToHome();
-                    break;
-                }
-            }
+            model.updateItemInfo("items",desc,price,available,cat,trade,selectedItemId);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        c.showAlert(Alert.AlertType.INFORMATION,"Item Update Complete","Item update completed successfully");
+        backToHome();
 
     }
 
-    public void deleteItem(ActionEvent actionEvent) {
-        Table table = null;
+    public void deleteItem() {
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
-            for(Row row : table) {
-                if (Integer.parseInt(row.get("ID").toString()) == selectedItemId) {
-
-                    table.deleteRow(row);
-                    c.showAlert(Alert.AlertType.INFORMATION,"Item Deleted","Item deleted successfully");
-                    backToHome();
-                    break;
-                }
-            }
+            model.deleteItem("items",selectedItemId);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        c.showAlert(Alert.AlertType.INFORMATION,"Item Deleted","Item deleted successfully");
+        backToHome();
     }
-
-//region commented
-
-    /*
-        public void lendItem(ActionEvent actionEvent) {
-        Parent root = null;
-        try {
-            lendMenu = new Stage();
-            root = FXMLLoader.load(getClass().getResource("lendItem.fxml"));
-            root.getStylesheets().add(getClass().getResource("style.css").toString());
-            lendMenu.setTitle("Lend " + itemDesc);
-            lendMenu.setScene(new Scene(root, 450, 350));
-            lendMenu.initModality(Modality.WINDOW_MODAL);
-            lendMenu.initOwner(currentStage);
-            lendMenu.setResizable(false);
-            lendMenu.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-        private void loadListOfUsers(String filter) {
-        lend_listView.getItems().clear();
-
-        Table table = null;
-
-        usersIdMap = new HashMap<>();
-        usersIdIndexInList = new HashMap<>();
-
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
-            int i = 0;
-            for(Row row : table) {
-                if (row.get("Username").toString().toLowerCase().contains(filter) && Integer.parseInt(row.get("ID").toString()) != userID && !row.get("userType").toString().equals("Owner") && row.get("Verification").toString().toLowerCase().equals("true")) {
-                    String user = row.get("Username").toString();
-                    String type = row.get("userType").toString();
-                    int id = Integer.parseInt(row.get("ID").toString());
-
-                    String listRow = user +" (Type: " + type + ")";
-                    lend_listView.getItems().add(i,listRow);
-
-                    usersIdMap.put(id,user);
-                    usersIdIndexInList.put(i,id);
-
-                    i++;
-                }
-            }
-
-            if(i==0){
-                lend_listView.getItems().add(i,"Could not find any relevant Loaner..");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void availabilityChange() {
-//        if(!upd_available.isSelected())
-//            b_lendItem.setDisable(true);
-//        else{
-//            b_lendItem.setDisable(false);
-//        }
-    }
-
-    public void filterByName() {
-        long kp = System.currentTimeMillis();
-
-        if(kp - lastKeyPress > 120) {
-            String currentFilter = lend_filter.getText();
-            loadListOfUsers(currentFilter);
-        }
-        lastKeyPress = kp;
-
-    }
-
-    public void checkToLend() {
-        ObservableList<Integer> userToLend = lend_listView.getSelectionModel().getSelectedIndices();
-
-        if(userToLend.size() != 1){
-            c.showAlert(Alert.AlertType.ERROR,"Item lending Error","Must choose exactly one user");
-            return;
-        }
-
-        LocalDateTime from = lend_from.getValue().atStartOfDay();
-        LocalDateTime to = lend_to.getValue().atStartOfDay().isEqual(from) ? lend_to.getValue().plusDays(1).atStartOfDay() : lend_to.getValue().atStartOfDay();
-
-        if(to.isBefore(from)){
-            c.showAlert(Alert.AlertType.ERROR,"Date Error","Cannot return item before lending");
-            return;
-        }
-
-        if(itemIsAvailable(from,to)){
-            try {
-                Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
-
-                String fromFormmated = getDateFormat(from);
-                String toFormmated = getDateFormat(to);
-
-                table.addRow(null,selectedItemId,false,usersIdIndexInList.get(userToLend.get(0)),from.toString(),to.toString());
-                c.showAlert(Alert.AlertType.INFORMATION,"Item Lending Success","Item " + itemDesc + " was lent to " + usersIdMap.get(usersIdIndexInList.get(userToLend.get(0))) + " from " + fromFormmated + " to " + toFormmated);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            c.showAlert(Alert.AlertType.ERROR,"Item Lending Error","Item is already booked for the following dates");
-            return;
-        }
-
-        lendMenu.close();
-        lendMenu = null;
-    }
-
-    public static boolean itemIsAvailable(LocalDateTime from, LocalDateTime to) {
-        Table table;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
-            for(Row row : table) {
-                if (Integer.parseInt(row.get("itemID").toString()) != selectedItemId) {
-                    LocalDateTime startTime = strToDate(row.get("startTime").toString());
-                    LocalDateTime returnTime = strToDate(row.get("returnTime").toString());
-
-                    if((from.isBefore(returnTime) && (from.isAfter(startTime) || from.isEqual(startTime)))
-                    ||  (from.isBefore(returnTime) && to.isAfter(startTime))
-                    || (from.isBefore(startTime) && to.isAfter(returnTime))
-                    || (from.isBefore(startTime) && (to.isAfter(returnTime) || to.isEqual(returnTime))))
-                        return false;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-*/
-    //endregionsed
 
     public static String getDateFormat(LocalDateTime to) {
         String[] sp =  to.toString().split("-");

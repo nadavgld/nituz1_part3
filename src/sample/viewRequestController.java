@@ -19,6 +19,7 @@ public class viewRequestController {
     private Controller c = new Controller();
     private int userID = Controller.userID;
     private String typeOfUser = c.typeOfUser;
+    private static Model model = Main.model;
 
     private HashMap<Integer,Integer> ownerRequests_id_index;
     private int rowHeight = 52;
@@ -36,32 +37,39 @@ public class viewRequestController {
 
     private void loadRequestToApprove() {
         ownerRequests_id_index = new HashMap<>();
+
         ListView lv = generateListView_r();
+
         lv.setPrefHeight(lv.getItems().size()*rowHeight);
         lv.setId("req_lv_app");
+
         TitledPane tp = new TitledPane("Requests Waiting for your action",lv);
         tp.setPrefHeight(lv.getPrefHeight());
+
         pv_accordion.getPanes().add(tp);
     }
 
     private void loadYourRequests() {
         ListView lv = generateListView_y();
+
         lv.setPrefHeight(lv.getItems().size()*rowHeight);
         lv.setId("req_lv_y");
+
         TitledPane tp = new TitledPane("Your Requests",lv);
         tp.setPrefHeight(lv.getPrefHeight());
+
         pv_accordion.getPanes().add(tp);
         pv_accordion.setExpandedPane(tp);
     }
 
     private ListView generateListView_r() {
         ListView lv = new ListView();
-        Table table = null;
+        Table table;
 
         int i=0;
 
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
+            table = model.getDBtable("requests");
 
             for(Row row : table) {
                 String status = row.get("status").toString();
@@ -90,22 +98,12 @@ public class viewRequestController {
                     Label approve = new Label();
                     approve.setText("V");
                     approve.getStyleClass().add("approve");
-                    approve.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent t) {
-                            actToRequest(true);
-                        }
-                    });
+                    approve.setOnMouseClicked(t -> actToRequest(true));
 
                     Label decline = new Label();
                     decline.setText("X");
                     decline.getStyleClass().add("decline");
-                    decline.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent t) {
-                            actToRequest(false);
-                        }
-                    });
+                    decline.setOnMouseClicked(t -> actToRequest(false));
 
                     HBox hb = new HBox();
                     hb.setSpacing(10);
@@ -128,23 +126,62 @@ public class viewRequestController {
 
     }
 
+    private ListView generateListView_y() {
+        ListView lv = new ListView();
+        Table table;
+
+        int i=0;
+
+        try {
+            table = model.getDBtable("requests");
+
+            for(Row row : table)
+                if (Integer.parseInt(row.get("from").toString()) == userID) {
+                    boolean isPackage = row.get("isPackage").toString().toLowerCase().equals("true") ? true : false;
+                    int itemID = Integer.parseInt(row.get("itemID").toString());
+
+                    Pair<String, String> itemDescription_Owner = loanListController.getDescriptionToItem(isPackage, itemID);
+
+                    String tmura = row.get("tmura").toString().chars().allMatch(Character::isDigit) ? row.get("tmura").toString()+"$" : row.get("tmura").toString();
+                    tmura = loanListController.fixTmuraView(tmura);
+
+                    String status = row.get("status").toString();
+
+                    String reqTime = updateItemController.getDateFormat(updateItemController.strToDate(row.get("dateOfRequest").toString()));
+                    String startDate = updateItemController.getDateFormat(updateItemController.strToDate(row.get("startDate").toString()));
+                    String returnDate = updateItemController.getDateFormat(updateItemController.strToDate(row.get("returnDate").toString()));
+
+
+                    lv.getItems().add(i,listViewRow(itemDescription_Owner,tmura,startDate,reqTime,returnDate,status));
+                    i++;
+                }
+
+            if(i==0){
+                lv.getItems().add(i,"Could not find any relevant request..");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lv;
+    }
+
     private void actToRequest(boolean approved) {
         ListView req_lv_app = (ListView) pv_accordion.getPanes().get(1).getContent();
         int req_idx = req_lv_app.getSelectionModel().getSelectedIndex();
         int reqID = ownerRequests_id_index.get(req_idx);
 
-        Table table = null;
+        Table table;
         String newStatus = approved ? "Approved" : "Declined";
 
         boolean changed = false;
         try {
             String tmura;
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
+            table = model.getDBtable("requests");
 
             for (Row row : table) {
                 if (Integer.parseInt(row.get("ID").toString()) == reqID) {
 
-                    //TODO: check if request suits with the approval on specific dates with those items(!!)
                     boolean valid = searchController.itemIsAvailable(Integer.parseInt(row.get("itemID").toString()),
                                                             updateItemController.strToDate(row.get("startDate").toString()),
                                                             updateItemController.strToDate(row.get("returnDate").toString()));
@@ -213,59 +250,15 @@ public class viewRequestController {
     }
 
     public static String userIDToUsername(int id) {
-        Table table = null;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("users");
+        String user = null;
 
-            for(Row row : table)
-                if (Integer.parseInt(row.get("ID").toString()) == id) {
-                    return row.get("Username").toString();
-                }
+        try {
+            user = model.getUserIDByUsername(id,"users");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    private ListView generateListView_y() {
-        ListView lv = new ListView();
-        Table table = null;
-
-        int i=0;
-
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
-
-            for(Row row : table)
-                if (Integer.parseInt(row.get("from").toString()) == userID) {
-                    boolean isPackage = row.get("isPackage").toString().toLowerCase().equals("true") ? true : false;
-                    int itemID = Integer.parseInt(row.get("itemID").toString());
-
-                    Pair<String, String> itemDescription_Owner = loanListController.getDescriptionToItem(isPackage, itemID);
-
-                    String tmura = row.get("tmura").toString().chars().allMatch(Character::isDigit) ? row.get("tmura").toString()+"$" : row.get("tmura").toString();
-                    tmura = loanListController.fixTmuraView(tmura);
-
-                    String status = row.get("status").toString();
-
-                    String reqTime = updateItemController.getDateFormat(updateItemController.strToDate(row.get("dateOfRequest").toString()));
-                    String startDate = updateItemController.getDateFormat(updateItemController.strToDate(row.get("startDate").toString()));
-                    String returnDate = updateItemController.getDateFormat(updateItemController.strToDate(row.get("returnDate").toString()));
-
-
-                    lv.getItems().add(i,listViewRow(itemDescription_Owner,tmura,startDate,reqTime,returnDate,status));
-                    i++;
-                }
-
-            if(i==0){
-                lv.getItems().add(i,"Could not find any relevant request..");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return lv;
+        return user;
     }
 
     private String listViewRow(Pair<String, String> itemDescription_owner, String tmura, String startDate, String reqTime, String returnDate, String status) {

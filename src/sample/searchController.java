@@ -32,6 +32,7 @@ public class searchController {
     private static int userID;
     private Controller c = new Controller();
     private static long lastKeyPress;
+    private static Model model = Main.model;
 
     private static int selectedItemId;
     private static int selectedIdexnum;
@@ -101,7 +102,6 @@ public class searchController {
 
 
     public void initialize() {
-        // initialization code here...
         currentStage = Controller.currentStage;
         userID = Controller.userID;
 
@@ -147,11 +147,9 @@ public class searchController {
             setPickerFromToday(lend_to_trade);
         });
 
-//        lend_itemList.getItems().add(0,"");
         int i=0;
-
         try {
-            Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
+            Table table = model.getDBtable("items");
             for(Row row: table){
                 if(Integer.parseInt(row.get("userID").toString()) == userID){
                     Item item = itemRowToItem(row,false);
@@ -162,7 +160,7 @@ public class searchController {
                 }
             }
 
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
+            table = model.getDBtable("packages");
             for(Row row: table){
                 if(Integer.parseInt(row.get("ownerID").toString()) == userID){
                     Item item = itemRowToItem(row,true);
@@ -209,8 +207,7 @@ public class searchController {
         String timeStamp = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss").format(Calendar.getInstance().getTime());
 
         try {
-            Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("userSearches");
-            table.addRow(null,userID,query,timeStamp);
+            model.addSearchLog("userSearches",userID,query,timeStamp);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -246,10 +243,10 @@ public class searchController {
         }
 
         String tableToCheck = pack ? "packages" : "items";
-        Table table = null;
+        Table table;
         search_list.getItems().clear();
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable(tableToCheck);
+            table = model.getDBtable(tableToCheck);
             int i = 0;
             for(Row row : table) {
                 if (rowContainsQuery(row,query, pack,toPrice)) {
@@ -305,7 +302,7 @@ public class searchController {
         return res;
     }
 
-    public void btnSearch(ActionEvent actionEvent) {
+    public void btnSearch() {
         search(null);
     }
 
@@ -500,15 +497,13 @@ public class searchController {
 
         if(itemIsAvailable(selectedItemId,from,to)){
             try {
-                Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("requests");
-
-                String fromFormmated = updateItemController.getDateFormat(from);
-                String toFormmated = updateItemController.getDateFormat(to);
+                model.addRequest("requests",from,to,itemDescMap.get(selectedIdexnum),type,tmura);
 
                 Item i = itemDescMap.get(selectedIdexnum);
 
-                table.addRow(null,userID,i.ownerIDOfItem(),type,i.isPackage,i.getId(),"Pending",LocalDateTime.now(),from,to,tmura);
-                c.showAlert(Alert.AlertType.INFORMATION,"Request was sent successfully","A request for item " + i.getDescription() + " was sent to it's owner " + i.ownerOfItem() + ", from " + fromFormmated + " to " + toFormmated);
+                String fromFormatted = updateItemController.getDateFormat(from);
+                String toFormatted = updateItemController.getDateFormat(to);
+                c.showAlert(Alert.AlertType.INFORMATION,"Request was sent successfully","A request for item " + i.getDescription() + " was sent to it's owner " + i.ownerOfItem() + ", from " + fromFormatted + " to " + toFormatted);
 
 
             } catch (IOException e) {
@@ -570,39 +565,36 @@ public class searchController {
     }
 
     private boolean dateAlreadyTaken(LocalDateTime date) {
-        return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1)) || !itemIsAvailable(itemInExchange,date.minusDays(1), date.plusDays(1));
+        if(paymentType.equals("Trade"))
+            return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1)) || !itemIsAvailable(itemInExchange,date.minusDays(1), date.plusDays(1));
+
+        return !itemIsAvailable(selectedItemId,date.minusDays(1), date.plusDays(1));
     }
 
     public static boolean itemIsAvailable(int id,LocalDateTime from, LocalDateTime to) {
-        Table table;
+
+        if(id == -1)
+            return true;
+
+        boolean isAvailable = false;
         HashSet<Integer> relevantIDs = checkIfItemInPackage(id);
         relevantIDs.add(id);
+
+
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("lending");
-            for(Row row : table) {
-                LocalDateTime startTime = updateItemController.strToDate(row.get("startTime").toString());
-                LocalDateTime returnTime = updateItemController.strToDate(row.get("returnTime").toString());
-
-                if (relevantIDs.contains(Integer.parseInt(row.get("itemID").toString())) && returnTime.isAfter(LocalDateTime.now().minusDays(1))) {
-
-                    if((from.isBefore(returnTime) && (from.isAfter(startTime) || from.isEqual(startTime)))
-                            ||  (from.isBefore(returnTime) && to.isAfter(startTime))
-                            || (from.isBefore(startTime) && to.isAfter(returnTime))
-                            || (from.isBefore(startTime) && (to.isAfter(returnTime) || to.isEqual(returnTime))))
-                        return false;
-                }
-            }
+            isAvailable = model.isDateAvailable("lending",relevantIDs,from,to);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return true;
+        return isAvailable;
     }
 
     private static HashSet<Integer> checkIfItemInPackage(int selectedItemId) {
         HashSet<Integer> hs = new HashSet<>();
         Table table;
+
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
+            table = model.getDBtable("itemInPackage");
             for(Row row : table) {
                 if ((Integer.parseInt(row.get("itemID").toString())) == selectedItemId) {
                     hs.add(Integer.parseInt(row.get("packageID").toString()));
@@ -638,16 +630,10 @@ public class searchController {
 
     //Item class
     private int amountOfItemInPackage(int packageID) {
-        Table table = null;
         int counter = 0;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
 
-            for(Row row: table){
-                if(Integer.parseInt(row.get("packageID").toString()) == packageID){
-                    counter++;
-                }
-            }
+        try {
+            counter = model.amountOfItemsInPackage("itemInPackage",packageID);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -668,7 +654,7 @@ public class searchController {
         return new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,type);
     }
 
-    private class Item{
+    public class Item{
         private int id;
         private String description;
         private String category;
@@ -693,7 +679,7 @@ public class searchController {
             Table table = null;
             String tableToCheck = isPackage ? "packages" : "items";
             try {
-                table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable(tableToCheck);
+                table = model.getDBtable(tableToCheck);
                 for(Row row : table) {
                     if (Integer.parseInt(row.get("ID").toString()) == id) {
                         o = isPackage ? viewRequestController.userIDToUsername(Integer.parseInt(row.get("ownerID").toString()))
@@ -715,7 +701,7 @@ public class searchController {
             Table table = null;
             String tableToCheck = isPackage ? "packages" : "items";
             try {
-                table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable(tableToCheck);
+                table = model.getDBtable(tableToCheck);
                 for(Row row : table) {
                     if (Integer.parseInt(row.get("ID").toString()) == id) {
                         o = isPackage ? (Integer.parseInt(row.get("ownerID").toString()))
@@ -753,6 +739,10 @@ public class searchController {
 
         public String getPrice() {
             return price;
+        }
+
+        public boolean isPackage() {
+            return isPackage;
         }
     }
 }

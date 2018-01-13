@@ -8,9 +8,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     public static Stage currentStage;
+    public static Model model;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        model = new Model();
         currentStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         root.getStylesheets().add(getClass().getResource("style.css").toString());

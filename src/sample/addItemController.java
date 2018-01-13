@@ -18,10 +18,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class addItemController {
-    private static Stage currentStage;
     private static int userID;
-    private static String username;
     private Controller c = new Controller();
+    private Model model = Main.model;
 
     @FXML
     private TextField add_description;
@@ -35,10 +34,7 @@ public class addItemController {
     private CheckBox add_tradable;
 
     public void initialize() {
-        // initialization code here...
-        currentStage = Controller.currentStage;
         userID = Controller.userID;
-        username = Controller.username;
 
         LinkedList<String> s = new LinkedList<>(Arrays.asList(c.choices));
         Collections.sort(s);
@@ -82,8 +78,8 @@ public class addItemController {
         }
 
         try {
-            Table table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
-            table.addRow(null,userID,desc,price+"$",available,cat,trade);
+
+            model.addItem(userID,desc,price,available,cat,trade);
 
             c.showAlert(Alert.AlertType.INFORMATION,"Item Adding", "Item was added successfully");
             backToHome();

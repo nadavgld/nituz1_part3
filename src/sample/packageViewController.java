@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class packageViewController {
-    private Controller c = new Controller();
     private static int userID = Controller.userID;
+    private Model model = Main.model;
 
     @FXML
     private Accordion pv_accordion;
@@ -40,24 +40,14 @@ public class packageViewController {
             tp.setPrefHeight(lv.getPrefHeight()*1.2);
             pv_accordion.getPanes().add(tp);
         }
-//        pv_accordion.setPrefHeight(maxInList*rowHeight*packges.size());
 
     }
 
     private ListView loadListView(int p) {
         ListView lv = new ListView();
 
-        Table table = null;
-        int i=0;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
-
-            for(Row row : table)
-                if (Integer.parseInt(row.get("packageID").toString()) == p) {
-                    int itemID = Integer.parseInt(row.get("itemID").toString());
-                    lv.getItems().add(i,idToItem(itemID));
-                    i++;
-                }
+            lv = model.loadListViewOfPackages("itemInPackage",p);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,28 +66,14 @@ public class packageViewController {
             }
         });
 
-        lv.getItems().add(i,l);
+        lv.getItems().add(lv.getItems().size(),l);
         return lv;
     }
 
     private void removePackage(int p) throws IOException {
-        Table table;
+        model.removeItemFromPackage("itemInPackage",p);
+        model.removePackage("packages",p);
 
-        table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("itemInPackage");
-        for(Row row: table){
-            if(Integer.parseInt(row.get("packageID").toString()) == p)
-                table.deleteRow(row);
-
-        }
-
-        table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
-        for(Row row: table){
-            if(Integer.parseInt(row.get("ID").toString()) == p) {
-                table.deleteRow(row);
-                break;
-            }
-        }
-//
         pv_accordion.getPanes().removeAll();
         Stage st = (Stage)pv_accordion.getScene().getWindow();
         st.close();
@@ -110,31 +86,6 @@ public class packageViewController {
         s.initModality(Modality.WINDOW_MODAL);
         s.initOwner(st);
         s.show();
-
-    }
-
-    private String idToItem(int itemID) {
-        Table table = null;
-        try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("items");
-
-            for(Row row : table)
-                if (Integer.parseInt(row.get("ID").toString()) == itemID) {
-                    String desc = row.get("Description").toString();
-                    String price = row.get("Price").toString();
-                    String cat = row.get("Category").toString();
-                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
-                    String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
-
-                    String listRow = desc + " (" + cat + ") - " + price + " - " + avaiable + ", " + tradable;
-
-                    return listRow;
-                }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
     }
 
     private HashMap<Integer,String> loadPackages() {
@@ -142,7 +93,7 @@ public class packageViewController {
 
         Table table = null;
         try {
-            table = DatabaseBuilder.open(new File(Controller.dbPath)).getTable("packages");
+            table = model.getDBtable("packages");
 
             for(Row row : table)
                 if (Integer.parseInt(row.get("ownerID").toString()) == userID)
