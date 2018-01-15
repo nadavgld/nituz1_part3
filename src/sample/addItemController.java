@@ -9,9 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +34,8 @@ public class addItemController {
     private CheckBox add_available;
     @FXML
     private CheckBox add_tradable;
+    @FXML
+    private ToggleGroup loanType;
 
     public void initialize() {
         userID = Controller.userID;
@@ -60,6 +64,9 @@ public class addItemController {
         Boolean trade = add_tradable.isSelected();
         Boolean available = add_available.isSelected();
 
+        RadioButton l_Gender = (RadioButton)loanType.getSelectedToggle();
+        String loan = l_Gender.getText();
+
         try{
             Integer.parseInt(price);
         }catch (Exception e){
@@ -79,7 +86,17 @@ public class addItemController {
 
         try {
 
-            model.addItem(userID,desc,price,available,cat,trade);
+            model.addItem(userID,desc,price,available,cat,trade, loan);
+            String mail = model.getMailByUSERID(userID,"users");
+
+            String body = "Hey There! You've added new item ("+desc+" - Priced "+price+"$) to your profile at " + LocalDateTime.now() +".";
+            try {
+                c.sendMail(mail, body);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
 
             c.showAlert(Alert.AlertType.INFORMATION,"Item Adding", "Item was added successfully");
             backToHome();

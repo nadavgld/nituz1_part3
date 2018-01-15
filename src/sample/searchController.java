@@ -68,6 +68,8 @@ public class searchController {
     @FXML
     private Label item_owner;
     @FXML
+    private Label item_loantype;
+    @FXML
     private ToggleGroup loanType;
 
     @FXML
@@ -112,6 +114,8 @@ public class searchController {
 
             if(!i.isTradable)
                 disableTrading();
+            if(!i.isAvailable)
+                disableGiveFree();
 
             item_desc.setText(i.getDescription());
 
@@ -121,6 +125,7 @@ public class searchController {
                 item_price.setText(i.getPrice());
 
             item_owner.setText(i.ownerOfItem());
+            item_loantype.setText(i.getLoanType());
 
             if(paymentType != null)
                 selectPayment();
@@ -133,6 +138,16 @@ public class searchController {
             if(paymentType != null) {
                 payment_type.setText(paymentType);
                 addInfoToPane();
+            }
+        }
+    }
+
+    private void disableGiveFree() {
+        for(Toggle t: loanType.getToggles()){
+            RadioButton rb = (RadioButton)t;
+            if(rb.getText().equals("Free-Loan") && !itemDescMap.get(selectedIdexnum).isAvailable) {
+                rb.setDisable(true);
+                break;
             }
         }
     }
@@ -252,16 +267,17 @@ public class searchController {
                 if (rowContainsQuery(row,query, pack,toPrice)) {
                     String desc = row.get("Description").toString();
                     String price = row.get("Price").toString();
+                    String loanType = row.get("loanType").toString();
                     String cat = pack ? "" : row.get("Category").toString();
-                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
-                    boolean b_a = avaiable.equals("is available") ? true : false;
+                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is Free-Loaned" : "is not Free-Loaned";
+                    boolean b_a = avaiable.equals("is Free-Loaned") ? true : false;
                     String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
                     boolean b_t = tradable.equals("is tradable") ? true : false;
 
                     String listRow = pack ? desc + " - " + price + "$ - " + avaiable + ", " + tradable : desc + " (" + cat + ") - " + price + " - " + avaiable + ", " + tradable;
                     search_list.getItems().add(i,listRow);
 
-                    itemDescMap.put(i,new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,tableToCheck));
+                    itemDescMap.put(i,new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,tableToCheck,loanType));
                     itemMap.put(i,Integer.parseInt(row.get("ID").toString()));
                     i++;
                 }
@@ -494,7 +510,6 @@ public class searchController {
             return false;
         }
 
-
         if(itemIsAvailable(selectedItemId,from,to)){
             try {
                 model.addRequest("requests",from,to,itemDescMap.get(selectedIdexnum),type,tmura);
@@ -645,13 +660,14 @@ public class searchController {
         String desc = row.get("Description").toString();
         String price = row.get("Price").toString();
         String cat = pack ? "" : row.get("Category").toString();
-        String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
-        boolean b_a = avaiable.equals("is available") ? true : false;
+        String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is Free-Loaned" : "is not Free-Loaned";
+        boolean b_a = avaiable.equals("is Free-Loaned") ? true : false;
         String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
         boolean b_t = tradable.equals("is tradable") ? true : false;
         String type = pack ? "packages" : "items";
+        String loanType = pack ? "Package" : row.get("loanType").toString();
 
-        return new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,type);
+        return new Item(Integer.parseInt(row.get("ID").toString()),desc,cat,b_a,b_t,price,type,loanType);
     }
 
     public class Item{
@@ -662,14 +678,16 @@ public class searchController {
         private boolean isTradable;
         private String price;
         private boolean isPackage;
+        private String loanType;
 
-        public Item(int id, String description, String category, boolean isAvailable, boolean isTradable, String price, String type) {
+        public Item(int id, String description, String category, boolean isAvailable, boolean isTradable, String price, String type, String loanType) {
             this.id = id;
             this.description = description;
             this.category = category;
             this.isAvailable = isAvailable;
             this.isTradable = isTradable;
             this.price = price;
+            this.loanType = loanType;
             this.isPackage = type.equals("packages") ? true : false;
         }
 
@@ -743,6 +761,14 @@ public class searchController {
 
         public boolean isPackage() {
             return isPackage;
+        }
+
+        public String getLoanType() {
+            return loanType;
+        }
+
+        public void setLoanType(String loanType) {
+            this.loanType = loanType;
         }
     }
 }

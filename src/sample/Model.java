@@ -3,6 +3,8 @@ package sample;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
 import com.healthmarketscience.jackcess.Row;
 import com.healthmarketscience.jackcess.Table;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 public class Model {
     public String dbPath;
@@ -42,11 +45,32 @@ public class Model {
         return false;
     }
 
+    public boolean checkIfMailExists(String mail, String tbl) throws IOException {
+        Table table = getDBtable(tbl);
+        for(Row row : table) {
+            if (row.get("Email").toString().equals(mail)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public String getMailByUSERID(int userID, String tbl) throws IOException {
+        Table table = getDBtable(tbl);
+
+        for(Row row : table)
+            if (Integer.parseInt(row.get("ID").toString()) == userID) {
+                return row.get("Email").toString();
+            }
+
+        return null;
+    }
 
     //AddItemController
-    public void addItem(int userID, String desc, String price, Boolean available, String cat, Boolean trade) throws IOException {
+    public void addItem(int userID, String desc, String price, Boolean available, String cat, Boolean trade, String loan) throws IOException {
         Table table = getDBtable("items");
-        table.addRow(null,userID,desc,price+"$",available,cat,trade);
+        table.addRow(null,userID,desc,price+"$",available,cat,trade,loan);
     }
 
 
@@ -118,7 +142,7 @@ public class Model {
                     String desc = row.get("Description").toString();
                     String price = row.get("Price").toString();
                     String cat = row.get("Category").toString();
-                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
+                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is Free-Loaned" : "is not Free-Loaned";
                     String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
 
                     String listRow = desc + " (" + cat + ") - " + price + " - " + avaiable + ", " + tradable;
@@ -152,7 +176,7 @@ public class Model {
 
 
     //ProfileController
-    public void updateUserInfo(String tbl, String name, String pass, String mail, String type) throws IOException {
+    public void updateUserInfo(String tbl, String name, String pass, String mail, String type, String address, String year, String gender, boolean isKosher) throws IOException {
         Table table = getDBtable(tbl);
 
         for(Row row : table) {
@@ -161,6 +185,10 @@ public class Model {
                 row.put("Email", mail);
                 row.put("Password", pass);
                 row.put("userType", type);
+                row.put("address", address);
+                row.put("yearOfBirth", year);
+                row.put("gender", gender);
+                row.put("isKosher", isKosher);
 
                 table.updateRow(row);
                 break;
@@ -170,7 +198,7 @@ public class Model {
 
 
     //updateItemController
-    public void updateItemInfo(String tbl, String desc, String price, Boolean available, String cat, Boolean trade, int selectedItemId) throws IOException {
+    public void updateItemInfo(String tbl, String desc, String price, Boolean available, String cat, Boolean trade, int selectedItemId, String loan) throws IOException {
         Table table = getDBtable(tbl);
         int prevPrice = -1;
 
@@ -183,6 +211,7 @@ public class Model {
                 row.put("isAvailable",available);
                 row.put("Category",cat);
                 row.put("isTradable",trade);
+                row.put("loanType",loan);
 
                 table.updateRow(row);
                 break;
@@ -218,14 +247,39 @@ public class Model {
     public void deleteItem(String tbl, int selectedItemId) throws IOException {
         Table table = getDBtable(tbl);
 
-        for(Row row : table) {
+        for (Row row : table) {
             if (Integer.parseInt(row.get("ID").toString()) == selectedItemId) {
+                int price = Integer.parseInt(row.get("Price").toString().substring(0, row.get("Price").toString().length() - 1));
+                updatePackagesCurrentPrice(-price, selectedItemId);
+
+                Table pck = getDBtable("itemInPackage");
+                for (Row r : pck)
+                    if (Integer.parseInt(r.get("itemID").toString()) == selectedItemId)
+                        pck.deleteRow(r);
+
                 table.deleteRow(row);
                 break;
             }
         }
+
     }
 
+    public boolean checkIfItemIsOrdered(String tbl, int selectedItemId) throws IOException {
+        Table table = getDBtable(tbl);
+
+        LocalDateTime now = LocalDateTime.now();
+        for (Row row : table) {
+            if(Integer.parseInt(row.get("itemID").toString()) == selectedItemId) {
+                LocalDateTime startTime = updateItemController.strToDate(row.get("startTime").toString());
+                LocalDateTime returnTime = updateItemController.strToDate(row.get("returnTime").toString());
+
+                if(returnTime.isEqual(now) || returnTime.isAfter(now) || startTime.equals(now) || startTime.isAfter(now))
+                    return true;
+            }
+        }
+
+        return false;
+    }
 
     //searchController
     public void addSearchLog(String tbl, int userID, String query, String timeStamp) throws IOException {
@@ -284,4 +338,5 @@ public class Model {
 
         return null;
     }
+
 }

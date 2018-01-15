@@ -55,7 +55,7 @@ public class itemListController {
                     String desc = row.get("Description").toString();
                     String price = row.get("Price").toString();
                     String cat = row.get("Category").toString();
-                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is available" : "is not available";
+                    String avaiable = row.get("isAvailable").toString().toLowerCase().equals("true") ? "is Free-Loaned" : "is not Free-Loaned";
                     String tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? "is tradable" : "is not tradable";
 
                     String listRow = desc + " (" + cat + ") - " + price + " - " + avaiable + ", " + tradable;
@@ -108,8 +108,8 @@ public class itemListController {
 
         selectedItems = itemList_list.getSelectionModel().getSelectedIndices();
 
-        if(selectedItems.size() == 0){
-            c.showAlert(Alert.AlertType.WARNING,"Package Creation Error", "Must choose at least one item");
+        if(selectedItems.size() < 2){
+            c.showAlert(Alert.AlertType.WARNING,"Package Creation Error", "Must choose at least two items");
             return;
         }
 

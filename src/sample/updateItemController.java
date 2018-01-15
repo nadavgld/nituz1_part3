@@ -42,6 +42,8 @@ public class updateItemController {
     private CheckBox upd_available;
     @FXML
     private CheckBox upd_tradable;
+    @FXML
+    private ToggleGroup loanType;
 
     public void initialize() {
         if(upd_cat != null) {
@@ -64,6 +66,16 @@ public class updateItemController {
                         String cat = row.get("Category").toString();
                         boolean available = row.get("isAvailable").toString().toLowerCase().equals("true") ? true : false;
                         boolean tradable = row.get("isTradable").toString().toLowerCase().equals("true") ? true : false;
+
+                        for(Toggle r: loanType.getToggles()) {
+                            RadioButton r_Type = (RadioButton) r;
+                            String type = r_Type.getText();
+
+                            if(type.equals(row.get("loanType").toString())){
+                                r_Type.setSelected(true);
+                                break;
+                            }
+                        }
 
                         upd_description.setText(desc);
                         upd_price.setText(price.substring(0, price.length() - 1));
@@ -100,6 +112,8 @@ public class updateItemController {
         Boolean trade = upd_tradable.isSelected();
         Boolean available = upd_available.isSelected();
 
+        RadioButton l_Gender = (RadioButton)loanType.getSelectedToggle();
+        String loan = l_Gender.getText();
         try{
             Integer.parseInt(price);
         }catch (Exception e){
@@ -113,7 +127,7 @@ public class updateItemController {
         }
 
         try {
-            model.updateItemInfo("items",desc,price,available,cat,trade,selectedItemId);
+            model.updateItemInfo("items",desc,price,available,cat,trade,selectedItemId,loan);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,13 +137,33 @@ public class updateItemController {
     }
 
     public void deleteItem() {
+
+        boolean isOrdered = false;
         try {
-            model.deleteItem("items",selectedItemId);
+            isOrdered = model.checkIfItemIsOrdered("lending",selectedItemId);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        c.showAlert(Alert.AlertType.INFORMATION,"Item Deleted","Item deleted successfully");
-        backToHome();
+
+        if(isOrdered){
+            c.showAlert(Alert.AlertType.ERROR,"Item Deletion Error","Cannot delete item because it has future orders");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Item Deletion");
+        alert.setHeaderText("Are you sure you want to delete this item?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == ButtonType.OK) {
+            try {
+                model.deleteItem("items", selectedItemId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            c.showAlert(Alert.AlertType.INFORMATION, "Item Deleted", "Item deleted successfully");
+            backToHome();
+        }
     }
 
     public static String getDateFormat(LocalDateTime to) {

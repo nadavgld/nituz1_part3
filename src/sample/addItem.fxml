@@ -5,17 +5,18 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <GridPane alignment="center" hgap="10" prefHeight="457.0" prefWidth="699.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.addItemController">
    <children>
       <BorderPane prefHeight="462.0" prefWidth="699.0">
@@ -36,7 +37,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label styleClass="link" onMouseClicked="#backToHome" text="Back" textFill="#4f75ff" underline="true">
+                  <Label onMouseClicked="#backToHome" styleClass="link" text="Back" textFill="#4f75ff" underline="true">
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin>
@@ -47,36 +48,49 @@
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="0.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <VBox.margin>
-                        <Insets left="150.0" top="50.0" />
+                        <Insets left="150.0" top="20.0" />
                      </VBox.margin>
                      <children>
-                         <Label fx:id="add_label" text="All form's fields are required" GridPane.rowIndex="1" />
-                         <TextField fx:id="add_description" focusTraversable="false" promptText="Item Description" GridPane.rowIndex="2" />
-                         <TextField fx:id="add_price" focusTraversable="false" promptText="Item Price (usd $)" GridPane.rowIndex="3" />
-                         <ChoiceBox fx:id="add_cat" prefWidth="150.0" GridPane.rowIndex="4">
+                         <Label fx:id="add_label" text="All form's fields are required" />
+                         <TextField fx:id="add_description" focusTraversable="false" promptText="Item Description" GridPane.rowIndex="1" />
+                         <TextField fx:id="add_price" focusTraversable="false" promptText="Item Price (usd $)" GridPane.rowIndex="2" />
+                         <ChoiceBox fx:id="add_cat" prefWidth="150.0" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets left="100.0" />
                            </GridPane.margin></ChoiceBox>
-                         <CheckBox fx:id="add_available" focusTraversable="false" GridPane.rowIndex="5">
+                         <CheckBox fx:id="add_available" focusTraversable="false" GridPane.rowIndex="4">
                            <GridPane.margin>
-                              <Insets left="100.0" />
+                              <Insets left="160.0" />
                            </GridPane.margin></CheckBox>
-                         <CheckBox fx:id="add_tradable" focusTraversable="false" GridPane.rowIndex="6">
+                         <CheckBox fx:id="add_tradable" focusTraversable="false" GridPane.rowIndex="5">
                            <GridPane.margin>
-                              <Insets left="100.0" />
+                              <Insets left="160.0" />
                            </GridPane.margin></CheckBox>
-                        <Label text="Category" GridPane.rowIndex="4" />
-                        <Label text="Available" GridPane.rowIndex="5" />
-                        <Label text="Tradable" GridPane.rowIndex="6" />
+                        <Label text="Category" GridPane.rowIndex="3" />
+                        <Label text="Willing to give free" GridPane.rowIndex="4" />
+                        <Label text="Willing to be Tradable" GridPane.rowIndex="5" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.rowIndex="6">
+                           <children>
+                              <Label text="Loan Type:" />
+                              <RadioButton mnemonicParsing="false" selected="true" text="First Gets">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="loanType" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Conservative" toggleGroup="$loanType" />
+                              <RadioButton mnemonicParsing="false" text="Safe" toggleGroup="$loanType" />
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
