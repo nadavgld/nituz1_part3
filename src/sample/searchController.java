@@ -23,9 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class searchController {
     private static Stage currentStage;
@@ -57,7 +55,7 @@ public class searchController {
     @FXML
     private CheckBox search_cb_trade;
     @FXML
-    private CheckBox search_cb_cat;
+    private ChoiceBox search_cb_cat;
     @FXML
     private CheckBox search_cb_pack;
 
@@ -107,8 +105,18 @@ public class searchController {
         currentStage = Controller.currentStage;
         userID = Controller.userID;
 
-        if(search_list != null)
+        if(search_list != null) {
             search_list.setVisible(false);
+
+            LinkedList<String> s = new LinkedList<>(Arrays.asList(c.choices));
+            Collections.sort(s);
+
+            search_cb_cat.getItems().add("Category");
+            for(String type: s){
+                search_cb_cat.getItems().add(type);
+            }
+            search_cb_cat.getSelectionModel().selectFirst();
+        }
         else if(item_desc != null){
             Item i = itemDescMap.get(selectedIdexnum);
 
@@ -292,16 +300,17 @@ public class searchController {
 
     private boolean rowContainsQuery(Row row, String query, boolean pack, boolean price) {
         boolean desc = search_cb_desc.isSelected();
-        boolean cat = search_cb_cat.isSelected();
+        String category = search_cb_cat.getSelectionModel().getSelectedItem().toString();
+        boolean cat = !category.equals("Category");
         boolean trade = search_cb_trade.isSelected();
 
-        boolean res = false;
+        boolean res = row.get("Description").toString().toLowerCase().contains(query);
 
-        if(desc)
-            res = res || row.get("Description").toString().toLowerCase().contains(query);
+        if(desc && !pack)
+            res = res && row.get("isAvailable").toString().toLowerCase().equals("true");
 
         if(cat && !pack)
-            res = res || row.get("Category").toString().toLowerCase().contains(query);
+            res = res && row.get("Category").toString().toLowerCase().equals(category.toLowerCase());
 
         if(trade) {
             boolean isTradeable = row.get("isTradable").toString().toLowerCase().equals("true");

@@ -3,9 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,8 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <GridPane alignment="center" hgap="10" prefHeight="457.0" prefWidth="699.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.searchController">
    <children>
       <BorderPane prefHeight="462.0" prefWidth="699.0">
@@ -41,9 +42,9 @@
                         <Insets left="5.0" />
                      </VBox.margin>
                   </Label>
-                  <GridPane alignment="CENTER" maxWidth="500.0" prefHeight="400.0" prefWidth="500.0" vgap="25.0">
+                  <GridPane alignment="CENTER" maxWidth="550.0" prefHeight="400.0" prefWidth="550.0" vgap="25.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="500.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="10.0" prefWidth="550.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="0.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -54,7 +55,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="250.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <VBox.margin>
-                        <Insets left="100.0" top="15.0" />
+                        <Insets left="75.0" top="15.0" />
                      </VBox.margin>
                      <children>
                          <Label fx:id="search_label" text="Insert searching keywords" />
@@ -65,14 +66,19 @@
                            </GridPane.margin></ListView>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0" GridPane.rowIndex="2">
                            <children>
-                              <CheckBox fx:id="search_cb_desc" maxHeight="25.0" mnemonicParsing="false" selected="true" text="Description">
+                              <!--<CheckBox fx:id="search_cb_cat" maxHeight="25.0" mnemonicParsing="false" selected="true" text="Category">-->
+                                 <!--<font>-->
+                                    <!--<Font size="12.0" />-->
+                                 <!--</font></CheckBox>-->
+                               <ChoiceBox fx:id="search_cb_cat" prefWidth="125.0" GridPane.rowIndex="3">
+                                   <GridPane.margin>
+                                       <Insets left="100.0" />
+                                   </GridPane.margin></ChoiceBox>
+                              <CheckBox fx:id="search_cb_desc" maxHeight="25.0" mnemonicParsing="false" text="Free-Loan">
                                  <font>
                                     <Font size="12.0" />
-                                 </font></CheckBox>
-                              <CheckBox fx:id="search_cb_cat" maxHeight="25.0" mnemonicParsing="false" selected="true" text="Category">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font></CheckBox>
+                                 </font>
+                              </CheckBox>
                               <CheckBox fx:id="search_cb_trade" maxHeight="25.0" mnemonicParsing="false" text="is Tradable">
                                  <font>
                                     <Font size="12.0" />
